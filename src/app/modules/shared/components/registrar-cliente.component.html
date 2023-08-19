@@ -1,0 +1,131 @@
+<div class="modal fade" id="modal-cliente">
+	<div class="modal-dialog" [class.modal-xl]="recommendationChecked">
+		<form #clienteRegistrar="ngForm" (ngSubmit)="onClienteFormSubmit()">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Registrar Cliente</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					
+					<div class="row">
+						<div [class.col-md-5]="recommendationChecked" [class.col-md-12]="!recommendationChecked">
+							<div class="form-row">
+								<div class="col-md-12">
+									<label for="nombres">Nombres</label>
+									<input type="text" id="nombres" name="nombres" class="form-control" #nombres="ngModel" [(ngModel)]="cliente.nombres" maxlength="50" required>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-12">
+									<label for="apellidos">Apellidos</label>
+									<input type="text" id="apellidos" name="apellidos" class="form-control" #apellidos="ngModel" [(ngModel)]="cliente.apellidos" maxlength="50" required>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-6">
+									<label for="tipo_doc">Tipo Documento</label>
+									<select id="tipo_doc" name="tipo_doc" class="form-control" #tipo_doc="ngModel" [(ngModel)]="cliente.tipo_doc" required>
+										<option>DNI</option>
+										<option>CE</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label for="num_doc">Nro Documento</label>
+									<input type="text" id="num_doc" name="num_doc" class="form-control" #num_doc="ngModel" [(ngModel)]="cliente.num_doc" maxlength="15" required>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-6">
+									<label for="telefono">Teléfono</label>
+									<input type="text" id="telefono" name="telefono" class="form-control" #telefono="ngModel" [(ngModel)]="cliente.telefono" maxlength="20" required>
+								</div>
+								<div class="col-md-6">
+									<label for="correo">Correo Electrónico</label>
+									<input type="email" id="correo" name="correo" class="form-control" #correo="ngModel" [(ngModel)]="cliente.correo" maxlength="50">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="col-md-6">
+									<label for="direccion">Dirección</label>
+									<input type="text" id="direccion" name="direccion" class="form-control" #direccion="ngModel" [(ngModel)]="cliente.direccion" maxlength="50">
+								</div>
+								<div class="col-md-6">
+									<label for="fecha_nac">Fecha de Nacimiento:</label>
+									<input type="date" id="fecha_nac" name="fecha_nac" class="form-control" #fecha_nac="ngModel" [(ngModel)]="cliente.fecha_nac" required>
+								</div>
+							</div>
+							<div class="form-row">
+								<label>¿Cómo llegó a nuestra barbería?</label>
+								<div class="form-group p-3">
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio" id="radioRecomendacion" name="customRadio">
+										<label for="radioRecomendacion" class="custom-control-label">Recomendación por parte de terceros (amigos, familiares, etc).</label>
+									</div>
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio" id="radioAnuncio" name="customRadio">
+										<label for="radioAnuncio" class="custom-control-label">Anuncio en redes sociales u otros medios.</label>
+									</div>
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input" type="radio" id="radioOtro" name="customRadio">
+										<label for="radioOtro" class="custom-control-label">Otro motivo. Especificar:</label>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<input id="inputDescripcion" type="text" class="form-control" name="descripcion" #descripcion="ngModel" [(ngModel)]="cliente.descripcion" readonly required>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-7" [class.d-none]="!recommendationChecked">
+							<div class="row mb-3">
+								<div class="col-md-8">
+									<div class="form-inline">
+										<label for="inputSearchRecom" class="mr-3">¿Quién le recomendó?:</label>
+										<input id="inputSearchRecom" #search type="search" class="form-control col" name="inputSearch" placeholder="Nombre, DNI, CE, RUC..." [(ngModel)]="searchTerm">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="table-responsive">
+										<table class="table table-bordered table-striped table-hover" id="dtBuscarRecomendador" width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<th>Nombres y Apellidos</th>
+													<th>Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="d-flex">
+										<label for="recomendador">Recomendado por:</label>
+										<input id="recomendador" class="form-control" name="recomendador" #recomendador="ngModel" type="text" [(ngModel)]="recomendadorNombre" readonly>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                    
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="fas fa-times mr-1"></span>
+						Cancelar
+					</button>
+					<button id="buttonRegisterCliente" type="submit" class="btn btn-success" [disabled]="!clienteRegistrar.form.valid">
+                        <i class="fas fa-check mr-1"></i>
+                        Guardar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

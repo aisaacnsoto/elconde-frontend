@@ -1,0 +1,203 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/'+return_to]">{{ return_to=='dashboard' ? 'Dashboard' : 'Inicio' }}</a></li>
+                    <li class="breadcrumb-item active">Cierre</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <h1>Cierre de Caja</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+				<form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+					<div class="card card-primary">
+						<div class="card-body">
+
+							<div class="form-group row">
+                                <div class="col-md-4">
+                                    <div class="d-flex align-items-center">
+                                        <label for="fecha" class="col-form-label text-center m-auto">Fecha</label>
+                                        <div id="spinner" class="spinner-border ml-auto spinner-border-sm text-success" style="display: none;" role="status" aria-hidden="true"></div>
+                                    </div>
+                                </div>
+								<div class="col-md-8">
+                                    <input type="date" id="fecha" name="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="caja_cierre.fecha" required (change)="getApertura()" [readonly]="usuario.rol != 1">
+								</div>
+                            </div>
+
+                            <hr>
+
+                            <!-- 200 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="bil_200">S/ 200.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="bil_200" id="bil_200" class="form-control" min="0" #bil_200="ngModel" [(ngModel)]="caja_cierre.bil_200" required focusOnShow [class.is-invalid]="bil_200.touched && !bil_200.valid" [class.is-valid]="bil_200.touched && bil_200.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.bil_200 * 200 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 100 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="bil_100">S/ 100.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="bil_100" id="bil_100" class="form-control" min="0" #bil_100="ngModel" [(ngModel)]="caja_cierre.bil_100" required [class.is-invalid]="bil_100.touched && !bil_100.valid" [class.is-valid]="bil_100.touched && bil_100.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.bil_100 * 100 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 50 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="bil_50">S/ 50.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="bil_50" id="bil_50" class="form-control" min="0" #bil_50="ngModel" [(ngModel)]="caja_cierre.bil_50" required [class.is-invalid]="bil_50.touched && !bil_50.valid" [class.is-valid]="bil_50.touched && bil_50.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.bil_50 * 50 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 20 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="bil_20">S/ 20.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="bil_20" id="bil_20" class="form-control" min="0" #bil_20="ngModel" [(ngModel)]="caja_cierre.bil_20" required [class.is-invalid]="bil_20.touched && !bil_20.valid" [class.is-valid]="bil_20.touched && bil_20.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.bil_20 * 20 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 10 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="bil_10">S/ 10.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="bil_10" id="bil_10" class="form-control" min="0" #bil_10="ngModel" [(ngModel)]="caja_cierre.bil_10" required [class.is-invalid]="bil_10.touched && !bil_10.valid" [class.is-valid]="bil_10.touched && bil_10.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.bil_10 * 10 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <hr>
+                            <!-- 5 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="mon_05">S/ 5.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="mon_05" id="mon_05" class="form-control" min="0" #mon_05="ngModel" [(ngModel)]="caja_cierre.mon_05" required [class.is-invalid]="mon_05.touched && !mon_05.valid" [class.is-valid]="mon_05.touched && mon_05.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.mon_05 * 5 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 2 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="mon_02">S/ 2.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="mon_02" id="mon_02" class="form-control" min="0" #mon_02="ngModel" [(ngModel)]="caja_cierre.mon_02" required [class.is-invalid]="mon_02.touched && !mon_02.valid" [class.is-valid]="mon_02.touched && mon_02.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.mon_02 * 2 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 1 SOLES -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="mon_01">S/ 1.00</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="mon_01" id="mon_01" class="form-control" min="0" #mon_01="ngModel" [(ngModel)]="caja_cierre.mon_01" required [class.is-invalid]="mon_01.touched && !mon_01.valid" [class.is-valid]="mon_01.touched && mon_01.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.mon_01 * 1 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 0.50 CENTIMOS -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="mon_50">S/ 0.50</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="mon_50" id="mon_50" class="form-control" min="0" #mon_50="ngModel" [(ngModel)]="caja_cierre.mon_50" required [class.is-invalid]="mon_50.touched && !mon_50.valid" [class.is-valid]="mon_50.touched && mon_50.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.mon_50 * 0.5 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 0.20 CENTIMOS -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="mon_20">S/ 0.20</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="mon_20" id="mon_20" class="form-control" min="0" #mon_20="ngModel" [(ngModel)]="caja_cierre.mon_20" required [class.is-invalid]="mon_20.touched && !mon_20.valid" [class.is-valid]="mon_20.touched && mon_20.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.mon_20 * 0.2 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+                            <!-- 0.10 CENTIMOS -->
+                            <div class="row mb-2">
+                                <div class="col-4 text-center m-auto">
+                                    <label for="mon_10">S/ 0.10</label>
+                                </div>
+                                
+                                <div class="col-4">
+                                    <input type="number" name="mon_10" id="mon_10" class="form-control" min="0" #mon_10="ngModel" [(ngModel)]="caja_cierre.mon_10" required [class.is-invalid]="mon_10.touched && !mon_10.valid" [class.is-valid]="mon_10.touched && mon_10.valid">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control text-right" disabled value="{{ caja_cierre.mon_10 * 0.1 | currency:'S/ ' }}">
+                                </div>
+                            </div>
+						</div>
+						<div class="card-footer">
+							<div class="form-inline">
+                                <span class="mr-1">Total:</span>
+                                <strong>{{ caja_cierre.total | currency:'S/ ' }}</strong>
+								<div class="col"></div>
+								<button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+									<i class="fas fa-check mr-1"></i>
+									Guardar
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,101 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="[ '/'+return_to ]">{{ return_to == 'dashboard' ? 'Dashboard' : 'Inicio' }}</a></li>
+                    <li class="breadcrumb-item active">Archivo</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Archivo de Ventas</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col">
+
+                
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="form-inline">
+                            <span>Ventas Desde</span>
+                            <input type="date" class="form-control ml-2 mr-2" [(ngModel)]="dateFrom" (change)="onChangeDate()">
+                            <span>Hasta</span>
+                            <input type="date" class="form-control ml-2" [(ngModel)]="dateTo" (change)="onChangeDate()">
+                            <div class="col"></div>
+                            <span class="text-primary"><i class="fas fa-filter mr-2"></i></span>
+                            <span>Cajero</span>
+                            <select name="cajeros" id="selectCajero" class="form-control ml-2" [(ngModel)]="selectedCajero" (change)="fetchData()">
+                                <option value="0">Todos</option>
+                                <option *ngFor="let cajero of cajeros" [value]="cajero.id">{{ cajero.nombre_display }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+                <div class="card card-primary">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="dtArchivoVentas" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr class="bg-gradient-primary">
+                                        <th>#</th>
+                                        <th>Cajero</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Forma de Pago</th>
+                                        <th>Cliente</th>
+                                        <th>Total</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<form #formEliminar="ngForm" (ngSubmit)="onDelete()">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Eliminar Venta</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					¿Desea continuar con la eliminación?
+					
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<i class="fas fa-times mr-1"></i>
+						Cancelar
+					</button>
+					<button id="buttonDelete" type="submit" class="btn btn-danger">
+                        <i class="fas fa-ban mr-1"></i>
+                        Eliminar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<app-ticket [data]="ticket"></app-ticket>

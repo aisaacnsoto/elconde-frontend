@@ -1,0 +1,162 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/reportes">Inicio</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Reporte de Citas Atendidas</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+				<div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="row">
+								<div class="col">
+                                </div>
+							</div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <label for="display_cliente">Cliente</label>
+                                <div class="input-group">
+                                    <input type="text" id="display_cliente" class="form-control" required [value]="cliente.nombres+' '+cliente.apellidos" readonly>
+                                    <div class="input-group-append" id="button-addon4">
+                                        <button type="button" id="btnBuscarCliente" class="btn btn-primary" data-toggle="modal" data-target="#modal-buscar-cliente"><i class="fas fa-search mr-1"></i>Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <label for="fechaDesde">Desde</label>
+                                <input type="date" id="fechaDesde" class="form-control" [(ngModel)]="fechaDesde" required>
+                            </div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <label for="fechaHasta">Hasta</label>
+                                <input type="date" id="fechaHasta" class="form-control" [(ngModel)]="fechaHasta" required>
+                            </div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <button id="btnConsultar" class="btn btn-primary" (click)="fetchData()">
+                                    <i class="fas fa-search mr-1"></i>
+                                    Consultar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <app-loader *ngIf="reloading"></app-loader> -->
+        
+		<div class="row" *ngIf="data">
+			<div class="col">
+
+                <div id="seccion-imprimir">
+
+                    <div class="row col">
+                        <h3 class="m-auto">Citas Atendidas</h3>
+                    </div>
+
+                    <hr>
+                    <div class="form-inline">
+                        Fecha: <strong><span class="ml-4">{{ data.fechaDesde | date:'dd/MM/yyyy' }} - {{ data.fechaHasta | date:'dd/MM/yyyy' }}</span></strong>
+                    </div>
+                    <hr>
+
+                    <div id="citasAtendidasAccordion">
+						<div class="card shadow" *ngFor="let registro of data.registros; let i = index">
+							<div class="card-header">
+								<h4 class="card-title">
+									<a data-toggle="collapse" data-parent="#citasAtendidasAccordion" href="#collapse{{ i }}">
+										<strong>{{ registro.fecha | date:'dd/MM/yyyy' }}</strong>
+									</a>
+								</h4>
+								<a class="float-right" data-toggle="collapse" data-parent="#citasAtendidasAccordion" href="#collapse{{ i }}">
+									<span><strong>{{ registro.total | currency:'S/ ' }}</strong></span>
+								</a>
+							</div>
+							<div id="collapse{{ i }}" class="panel-collapse collapse show">
+								<div class="card-body p-0">
+									<div class="table-responsive">
+										<table class="table table-striped m-0" width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+                                                    <th scope="col">Hora</th>
+                                                    <th scope="col">Barbero</th>
+                                                    <th scope="col">Cantidad</th>
+                                                    <th scope="col">Servicio</th>
+                                                    <th scope="col">Precio</th>
+                                                    <th scope="col">Descuento</th>
+                                                    <th scope="col">Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let info of registro.detalle; let j = index">
+													<td>{{ (j + 1) }}</td>
+													<td>{{ info.hora }}</td>
+													<td>{{ info.empleado_nombre }}</td>
+													<td>{{ info.cantidad }}</td>
+													<td>{{ info.descripcion }}</td>
+													<td>{{ info.precio | currency:'S/ ' }}</td>
+													<td>
+														<div class="d-flex text-center">
+															<span>{{ info.descuento }} %</span>
+															<div *ngIf="info.promo_id != null && info.descuento > 0" class="ml-1">
+																<span *ngIf="info.promo_id == 1" class="text-primary" title="Recomendaciones"><i class="fas fa-user-friends"></i></span>
+																<span *ngIf="info.promo_id == 2" class="text-warning" title="Cliente VIP"><i class="fas fa-crown"></i></span>
+                                                                <span *ngIf="info.promo_id == 3" class="text-pink" title="Cumpleaños"><i class="fas fa-birthday-cake"></i></span>
+                                                                <span *ngIf="info.promo_id == 4" class="text-orange" title="Trabajador"><i class="fas fa-briefcase"></i></span>
+																<span *ngIf="[1,2,3,4].indexOf(info.promo_id) == -1" class="text-danger"><i class="fas fa-certificate"></i><strong>{{ info.promo_nombre }}</strong></span>
+															</div>
+														</div>
+													</td>
+													<td class="text-right text-nowrap">{{ info.importe | currency:'S/ ' }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+                </div>
+                
+                <div class="row col">
+                    <button class="btn btn-primary" (click)="imprimir()"><i class="fas fa-print mr-1"></i>Imprimir</button>
+                </div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="modal fade" id="modal-buscar-cliente">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Buscar Cliente</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<app-reporte-clientes-citas-buscar (selectedCliente)="buscarCliente($event)"></app-reporte-clientes-citas-buscar>
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<div class="modal fade" id="modal-buscar-proveedor">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Proveedor</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<div class="row mb-3">
+                    <div class="col-md-8">
+                        <div class="form-inline">
+                            <label for="inputSearchProveedor" class="mr-3">Buscar:</label>
+                            <input id="inputSearchProveedor" #search type="search" class="form-control col" placeholder="Nombre, DNI, CE, RUC..." [(ngModel)]="searchTerm">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="tableSearchProveedor" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Nombres</th>
+                                        <th>RUC</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+			</div>
+		</div>
+	</div>
+</div>

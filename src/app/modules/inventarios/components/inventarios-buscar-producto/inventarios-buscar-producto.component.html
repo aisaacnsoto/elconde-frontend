@@ -1,0 +1,65 @@
+<div class="row mb-3">
+    <div class="col-md-8">
+        <div class="form-inline">
+            <label for="inputSearch" class="mr-3">Buscar Producto:</label>
+            <input #searchInput id="inputSearch" type="search" class="form-control col" placeholder="Nombre o Código de Barras..." [(ngModel)]="searchTerm" (keyup.enter)="onBarCodeEnter(searchInput.value)">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover" id="tableSearchProduct" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Unidad de Medida</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalProduct">
+	<div class="modal-dialog">
+		<form #articuloForm="ngForm" (ngSubmit)="onArticuloSubmit()">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Agregar Producto</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="form-row">
+						<div class="col-sm-9">
+							<label for="nombreProducto">Producto</label>
+							<input type="text" id="nombreProducto" name="nombreProducto" class="form-control" [value]="product.nombre" readonly>
+						</div>
+						<div class="col-sm-3">
+							<label for="stockActual">Stock Actual</label>
+							<input type="text" id="stockActual" name="stockActual" class="form-control" [(ngModel)]="product.stock" required focusOnShow>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="fas fa-times mr-1"></span>
+						Cancelar
+					</button>
+					<button type="submit" class="btn btn-success ml-2" [disabled]="!articuloForm.form.valid">
+						<span class="fas fa-check mr-1"></span>
+						Aceptar
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

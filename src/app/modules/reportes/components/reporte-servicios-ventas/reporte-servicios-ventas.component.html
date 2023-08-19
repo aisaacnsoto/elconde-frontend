@@ -1,0 +1,212 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="[ '/'+return_to ]">{{ return_to == 'dashboard' ? 'Dashboard' : 'Inicio' }}</a></li>
+                    <li class="breadcrumb-item active">Resumen</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Ventas y Servicios del Día</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+        <div class="row mb-2">
+            <div class="col">
+				<div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-3 mb-0">
+                                <label for="fecha">Fecha:</label>
+                                <input type="date" id="fecha" class="form-control" [(ngModel)]="fecha" (change)="fetchData()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <app-loader *ngIf="!data"></app-loader>
+
+		<div class="row" *ngIf="data">
+			<div class="col">
+
+                <div id="seccion-imprimir">
+
+                    <div class="row col">
+                        <h3 class="m-auto">Resumen del Día</h3>
+                    </div>
+
+                    <hr>
+                    <div class="form-inline">
+                        Fecha: <span class="ml-4"><strong>{{ data.fecha | date:'dd/MM/yyyy' }}</strong></span>
+                    </div>
+                    <hr>
+
+                    <div id="gastosAccordion">
+						<div class="card shadow" *ngIf="data.servicios.length > 0">
+							<div class="card-header">
+								<h4 class="card-title">
+									<a data-toggle="collapse" data-parent="#gastosAccordion" href="#servicios">
+										<strong>Citas Atendidas</strong>
+									</a>
+								</h4>
+								<!-- <a class="float-right" data-toggle="collapse" data-parent="#gastosAccordion" href="#servicios">
+									<span><strong>{{ registro.total | currency:'S/ ' }}</strong></span>
+								</a> -->
+							</div>
+							<div id="servicios" class="panel-collapse collapse show">
+								<div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Hora</th>
+                                                    <th class="text-center">Cliente</th>
+                                                    <th class="text-center">Barbero</th>
+                                                    <th class="text-center">Servicio</th>
+                                                    <th class="text-center">Descuento</th>
+                                                    <th class="text-center">Monto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let registro of data.servicios; let i = index">
+                                                    <td class="text-center">{{ i + 1 }}</td>
+                                                    <td>{{ registro.hora }}</td>
+                                                    <td>{{ registro.cliente }}</td>
+                                                    <td>{{ registro.barbero }}</td>
+                                                    <td>{{ registro.servicio }}</td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex text-center">
+                                                            <span>{{ registro.descuento }} %</span>
+                                                            <div *ngIf="registro.promo_id != null && registro.descuento > 0" class="ml-1">
+                                                                <span *ngIf="registro.promo_id == 1" class="text-primary" title="Recomendaciones"><i class="fas fa-user-friends"></i></span>
+                                                                <span *ngIf="registro.promo_id == 2" class="text-warning" title="Cliente VIP"><i class="fas fa-crown"></i></span>
+                                                                <span *ngIf="registro.promo_id == 3" class="text-pink" title="Cumpleaños"><i class="fas fa-birthday-cake"></i></span>
+                                                                <span *ngIf="registro.promo_id == 4" class="text-orange" title="Trabajador"><i class="fas fa-briefcase"></i></span>
+                                                                <span *ngIf="[1,2,3,4].indexOf(registro.promo_id) == -1" class="text-danger"><i class="fas fa-certificate"></i><strong>{{ registro.promo_nombre }}</strong></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-right text-nowrap">
+                                                        <span>
+                                                            <i class="fas fa-credit-card mr-1" *ngIf="registro.metodo_pago == 'TARJETA'"></i>
+                                                            {{ registro.total | currency:'S/ ' }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+						<div class="card shadow" *ngIf="data.ventas.length > 0">
+							<div class="card-header">
+								<h4 class="card-title">
+									<a data-toggle="collapse" data-parent="#gastosAccordion" href="#ventas">
+										<strong>Ventas</strong>
+									</a>
+								</h4>
+								<!-- <a class="float-right" data-toggle="collapse" data-parent="#gastosAccordion" href="#ventas">
+									<span><strong>{{ registro.total | currency:'S/ ' }}</strong></span>
+								</a> -->
+							</div>
+							<div id="ventas" class="panel-collapse collapse show">
+								<div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center">#</th>
+                                                    <th class="text-center">Hora</th>
+                                                    <th class="text-center">Cantidad</th>
+                                                    <th class="text-center">Producto</th>
+                                                    <th class="text-center">Unidad</th>
+                                                    <th class="text-center">Vendedor</th>
+                                                    <th class="text-center">Monto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let registro of data.ventas; let i = index">
+                                                    <td class="text-center">{{ i + 1 }}</td>
+                                                    <td>{{ registro.hora }}</td>
+                                                    <td>{{ registro.cantidad }}</td>
+                                                    <td>{{ registro.producto }}</td>
+                                                    <td>{{ registro.unidad_medida }}</td>
+                                                    <td>{{ registro.vendedor }}</td>
+                                                    <td class="text-right text-nowrap">
+                                                        <i class="fas fa-credit-card mr-1" *ngIf="registro.metodo_pago == 'TARJETA'"></i>
+                                                        <span class="text-primary">
+                                                        </span>
+                                                        {{ registro.total | currency:'S/ ' }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                
+                                    </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+                </div>
+                
+			</div>
+        </div>
+          
+        <div class="row" *ngIf="data">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-secondary shadow">
+							<div class="card-header">
+								<h4 class="card-title">
+									<strong>SUBTOTAL</strong>
+								</h4>
+								<span class="float-right"><strong>{{ data.total.subtotal | currency:'S/ ' }}</strong></span>
+							</div>
+						</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-secondary shadow">
+							<div class="card-header">
+								<h4 class="card-title">
+									<i class="fas fa-credit-card mr-1"></i>
+                                    <strong>TARJETA</strong>
+								</h4>
+								<span class="float-right"><strong>{{ data.total.tarjeta * -1 | currency:'S/ ' }}</strong></span>
+							</div>
+						</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="card card-secondary shadow">
+							<div class="card-header">
+								<h4 class="card-title">
+									<strong>TOTAL</strong>
+								</h4>
+								<span class="float-right"><strong>{{ data.total.monto_total | currency:'S/ ' }}</strong></span>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	</div>
+</section>

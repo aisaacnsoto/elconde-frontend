@@ -1,0 +1,15 @@
+
+<div class="form-inline mb-4">
+    <label for="search" class="col-form-label mr-3">Buscar:</label>
+    <input type="search" name="search" id="search" style="width: 250px !important;" [(ngModel)]="searchTerm" class="form-control" placeholder="Nombre o Código de Barras" focusOnShow>
+    <label class="col-form-label ml-3 mr-3">Total:</label>
+    <span class="text-muted">{{ productos.length }} registro{{ productos.length == 1 ? '' : 's' }}.</span>
+</div>
+
+<span class="text-muted" *ngIf="filtered">Productos encontrados: {{ filteredProductos.length }}</span>
+
+<div class="d-flex flex-wrap">
+    <div *ngFor="let producto of filteredProductos">
+        <app-producto-tile [producto]="producto" (selected)="onSelected($event)" (delete)="onDelete($event)"></app-producto-tile>
+    </div>
+</div>

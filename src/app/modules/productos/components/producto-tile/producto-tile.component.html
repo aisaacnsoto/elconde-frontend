@@ -1,0 +1,33 @@
+<div class="card m-2 shadow" style="width: 18rem;" (click)="onClick()">
+    <!-- <img src="..." class="card-img-top" alt="..."> -->
+    <div class="card-body">
+        <h5 class="card-title"><strong>{{ producto.nombre }}</strong></h5>
+        <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+    </div>
+    <ul class="list-group list-group-flush">
+        <!-- <li class="list-group-item">
+            Precio
+            <span class="float-right">{{ producto.precio | currency:'S/ ' }}</span>
+        </li> -->
+        <li class="list-group-item">
+            Estado
+            <span class="badge float-right" [class.badge-success]="producto.activo == 1" [class.badge-danger]="producto.activo == 0">
+                {{ producto.activo == 1 ? 'Activo' : 'Inactivo' }}
+            </span>
+        </li>
+    </ul>
+    <div class="card-body">
+        <a routerLink="/productos/editar/{{producto.id}}" class="card-link btn btn-info">
+            <i class="fas fa-edit mr-1"></i>
+            Editar
+        </a>
+        <button class="card-link btn btn-danger" (click)="onDeleteClick()">
+            <i class="fas fa-trash-alt mr-1"></i>
+            Eliminar
+        </button>
+        <a routerLink="/productos/presentaciones/{{producto.id}}" class="card-link btn btn-warning">
+            <i class="fas fa-box mr-1"></i>
+            Presentaciones
+        </a>
+    </div>
+</div>

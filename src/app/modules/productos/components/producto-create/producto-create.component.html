@@ -1,0 +1,84 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/productos">Inicio</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col text-center">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Producto</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+
+										<div class="form-group row">
+											<label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre</label>
+                                            <div class="col-md-6">
+												<input type="text" id="nombre" name="nombre" class="form-control" #nombre="ngModel" [(ngModel)]="producto.nombre" required focusOnShow [class.is-invalid]="nombre.touched && !nombre.valid" [class.is-valid]="nombre.touched && nombre.valid">
+                                                <div class="invalid-feedback">
+                                                    El nombre es obligatorio.
+                                                </div>
+                                            </div>
+										</div>
+
+										<div class="form-group row">
+											<label for="categoria" class="col-md-4 col-form-label text-md-right">Categoría</label>
+											<div class="col-md-6">
+												<select id="categoria" name="categoria" class="form-control" #categoria="ngModel" [(ngModel)]="producto.categoria" required selectDefaultValue="-1" [class.is-invalid]="categoria.touched && !categoria.valid" [class.is-valid]="categoria.touched && categoria.valid">
+													<option value="-1">-- Seleccione una Categoría --</option>
+													<option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</option>
+												</select>
+												<div class="invalid-feedback" *ngIf="categoria.touched">
+													Por favor, seleccione una categoría.
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group row">
+											<label for="activo" class="col-md-4 col-form-label text-md-right">Estado</label>
+											<div class="col-md-6">
+												<select id="activo" name="activo" class="form-control" #activo="ngModel" [(ngModel)]="producto.activo" required>
+													<option value="1">Activo</option>
+													<option value="0">Inactivo</option>
+												</select>
+											</div>
+										</div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>

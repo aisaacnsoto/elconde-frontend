@@ -1,0 +1,161 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/compras">Inicio</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Compra</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col">
+                <form #formRegister="ngForm" (ngSubmit)="onSubmit()">
+					<div class="card card-primary card-outline">
+						<div class="card-body">
+	
+							<div class="row mb-4">
+								<div class="col-md-2">
+									<label for="fecha_emision">Fecha de Emisión</label>
+									<input type="date" name="fecha_emision" id="fecha_emision" class="form-control" #fecha_emision="ngModel" [(ngModel)]="compra.fecha_emi" required>
+								</div>
+								<div class="col-md-2">
+									<label for="fecha_inter">Fecha de Internamiento</label>
+									<input type="date" name="fecha_inter" id="fecha_inter" class="form-control" #fecha_inter="ngModel" [(ngModel)]="compra.fecha_inter" required>
+								</div>
+								<div class="col-md-2">
+									<label for="hora_inter">Hora de Internamiento</label>
+									<input type="time" name="hora_inter" id="hora_inter" class="form-control" #hora_inter="ngModel" [(ngModel)]="compra.hora_inter" required>
+								</div>
+								<!-- <div class="col-md-4">
+									<label for="proveedor">Proveedor</label>
+									<input type="text" name="proveedor" id="proveedor" class="form-control" #proveedor="ngModel" [(ngModel)]="compra.proveedor" required>
+								</div> -->
+								<div class="col-md-4">
+									<label for="proveedor">Proveedor</label>
+									<div class="input-group">
+										<!-- <input type="text" id="dniCliente" name="cliente" class="form-control" placeholder="DNI o CE"> -->
+										<input type="text" id="proveedor" class="form-control" name="proveedor" [(ngModel)]="selectedProveedor.nombre" readonly>
+										<div class="input-group-append" id="button-addon4">
+											<button type="button" id="btnBuscarProveedor" class="btn btn-primary" (click)="buscarProveedor()"><i class="fas fa-search mr-1"></i>Buscar</button>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+								</div>
+								<div class="col-md-3">
+									<label for="tipo_doc">Tipo de Documento</label>
+									<select name="tipo_doc" id="tipo_doc" class="form-control" #tipo_doc="ngModel" [(ngModel)]="compra.tipo_doc" required>
+										<option>GUIA DE REMISION</option>
+										<option>BOLETA DE VENTA</option>
+										<option>FACTURA</option>
+									</select>
+								</div>
+								<div class="col-md-3">
+									<label for="nro_doc_pref">N° de Documento</label>
+									<div class="row">
+										<div class="col-md-4">
+											<input type="text" name="nro_doc_pref" id="nro_doc_pref" class="form-control" #nro_doc_pref="ngModel" [(ngModel)]="compra.nro_doc_pref" required>
+										</div>
+										<div class="col-md-8">
+											<input type="text" name="nro_doc_suf" id="nro_doc_suf" class="form-control" #nro_doc_suf="ngModel" [(ngModel)]="compra.nro_doc_suf" required>
+										</div>
+									</div>
+								</div>
+
+								
+							</div>
+
+							<hr>
+
+							<div class="row">
+								<div class="col">
+									<app-compra-buscar-producto (selectedProduct)="onProductoSubmit($event)"></app-compra-buscar-producto>
+								</div>
+							</div>
+							
+			
+							<!-- DETALLE COMPRA -->
+							<div class="row mt-3">
+								<div class="col">
+									<div class="table-responsive">
+										<table class="table table-bordered table-striped table-hover" width="100%" cellspacing="0">
+											<thead class="bg-primary text-light">
+												<tr>
+													<th>Cantidad</th>
+													<th>Producto</th>
+													<th>Unidad de Medida</th>
+													<th>Precio Compra</th>
+													<th>Importe</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let item of compra.detalle; index as i">
+													<td>{{ item.cantidad }}</td>
+													<td>{{ item.get_producto.producto.nombre }}</td>
+													<td>{{ item.get_producto.unidad_medida.unidad }}</td>
+													<td>{{ item.precio | currency:'S/ ' }}</td>
+													<td>{{ item.importe | currency:'S/ ' }}</td>
+													<td>
+														<button type="button" class="btn btn-danger" (click)="removeItem(i)">
+															<i class="fas fa-times"></i>
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+	
+							<!-- TOTALES COMPRA -->
+							<div class="row">
+								<div class="col-md-8"></div>
+								<div class="col-md-4">
+									<div class="table-responsive">
+										<table class="table table-bordered" width="100%" cellspacing="0">
+											<tbody>
+												<tr>
+													<td><strong>TOTAL</strong></td>
+													<td>{{ compra.total | currency:'S/ ' }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row col">
+						<div class="form-inline">
+							<button id="buttonRegister" type="submit" class="btn btn-success mr-2" [disabled]="!formRegister.form.valid">
+								<i class="fas fa-check mr-2"></i>Guardar
+							</button>
+							<div id="spinnerRegister" class="spinner-border spinner-border-lg text-success m-auto" role="status" style="display: none;">
+								<span class="sr-only">Loading...</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<app-buscar-proveedor
+	#buscarProveedorComponent
+	(selectedItem)="onSelectProveedor($event)"
+></app-buscar-proveedor>

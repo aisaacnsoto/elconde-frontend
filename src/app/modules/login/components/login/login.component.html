@@ -1,0 +1,37 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-spin-clockwise-fade" [fullScreen]="true">
+</ngx-spinner>
+
+<div class="login-page">
+	<div class="login-box">
+		<div class="card">
+			<div class="card-body login-card-body">
+				<p class="login-box-msg">Identifícate</p>
+
+				<form #loginForm="ngForm" method="post" (ngSubmit)="onSubmit()">
+					<div class="input-group mb-3">
+						<input name="username" #username="ngModel" ngControl="username" [(ngModel)]="user.username" type="text" class="form-control" placeholder="Nombre de Usuario" required>
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fas fa-envelope"></span>
+							</div>
+						</div>
+					</div>
+					<div class="input-group mb-3">
+						<input name="password" #password="ngModel" ngControl="password" [(ngModel)]="user.password" type="password" class="form-control" placeholder="Contraseña" required>
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fas fa-lock"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.form.valid"><i class="fas fa-sign-in-alt mr-2"></i>Ingresar</button>
+						</div>
+					</div>
+				</form>
+				
+			</div>
+		</div>
+	</div>
+</div>

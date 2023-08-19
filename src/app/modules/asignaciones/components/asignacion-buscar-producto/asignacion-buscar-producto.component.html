@@ -1,0 +1,26 @@
+<div class="row mb-3">
+	<div class="col-md-8">
+		<div class="form-inline">
+			<label for="inputSearch" class="mr-3">Buscar:</label>
+			<input #searchInput id="inputSearchAsignacion" type="search" class="form-control col" placeholder="Nombre o Código de Barras..." [(ngModel)]="searchTerm">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped table-hover" id="dtBuscarProductoAsignacion" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Unidad de Medida</th>
+						<th>Stock</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

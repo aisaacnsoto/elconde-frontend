@@ -1,0 +1,166 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/'+return_to]">{{ return_to == 'dashboard' ? 'Dashboard' : 'Inicio' }}</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <h1>Gastos</h1>
+            </div>
+            <div class="col">
+				<a class="float-right" routerLink="/gastos/tipos">
+					<button class="btn btn-warning">
+						<i class="fas fa-tags mr-1"></i>
+						Tipos de Gastos
+					</button>
+				</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-4">
+                <form #gastoForm="ngForm" (ngSubmit)="onSubmit(gastoForm)" class="needs-validation">
+                    <div class="card card-primary card-outline">
+
+						<div class="card-body">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label for="fecha" class="col-form-label">Fecha</label>
+                                    <input type="date" id="fecha" name="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="gasto.fecha" required readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="total" class="col-form-label">Total</label>
+                                    <input type="text" id="total" name="total" class="form-control" #total="ngModel" [(ngModel)]="gasto.total" required focusOnShow>
+									<div class="invalid-feedback">
+										El monto es obligatorio.
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<div class="col">
+									<label for="tipo_comprobante" class="col-form-label">Tipo de Comprobante</label>
+									<select id="tipo_comprobante" name="tipo_comprobante" class="form-control" #tipo_comprobante="ngModel" [(ngModel)]="gasto.tipo_comprobante" required>
+										<option>BOLETA DE VENTA</option>
+										<option>FACTURA</option>
+										<option>TICKET</option>
+										<option>RECIBO DE EGRESOS</option>
+									</select>
+									<div class="invalid-feedback">
+										El tipo de comprobante es obligatorio.
+									</div>
+								</div>
+							</div>
+                            
+							<div class="form-group row">
+								<div class="col">
+									<label for="nro_comprobante" class="col-form-label">Nro de Comprobante</label>
+									<input type="text" id="nro_comprobante" name="nro_comprobante" class="form-control" #nro_comprobante="ngModel" [(ngModel)]="gasto.nro_comprobante" required>
+									<div class="invalid-feedback">
+										El n° de comprobante es obligatorio.
+									</div>
+								</div>
+							</div>
+                            
+							<div class="form-group row">
+								<div class="col">
+									<label for="tipo_gasto" class="col-form-label">Tipo de Gasto</label>
+									<select id="tipo_gasto" name="tipo_gasto" class="form-control" #tipo_gasto="ngModel" [(ngModel)]="gasto.tipo_gasto" required selectDefaultValue="-1">
+										<option value="-1">-- Seleccione un Tipo --</option>
+										<option *ngFor="let tipo of gastoTipos" [value]="tipo.id">{{ tipo.nombre }}</option>
+									</select>
+									<div class="invalid-feedback">
+										Por favor, seleccione un tipo.
+									</div>
+								</div>
+							</div>
+							
+							<div class="form-group row">
+								<div class="col">
+									<label for="descripcion">Descripción</label>
+									<textarea id="descripcion" name="descripcion" class="form-control" #descripcion="ngModel" [(ngModel)]="gasto.descripcion"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer" *ngIf="gastoTipos">
+                            <div class="form-inline">
+                                <button type="button" class="btn-wide btn btn-default" (click)="setDefaultData()" *ngIf="flags.edit">
+                                    <span class="fas fa-times mr-1"></span>
+                                    Cancelar
+                                </button>
+                                <div class="col"></div>
+                                <button id="buttonRegister" type="submit" class="btn-wide btn btn-success ml-2" [disabled]="!gastoForm.form.valid">
+                                    <span class="fas fa-check mr-1"></span>
+                                    Guardar
+                                </button>
+                            </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-8">
+				<div class="card card-primary card-outline">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped table-hover" id="dtGastos" width="100%" cellspacing="0">
+								<thead class="bg-primary text-light">
+									<tr>
+										<th>Id</th>
+										<th>Fecha</th>
+										<th>Tipo Comprobante</th>
+										<th>Nro. Comprobante</th>
+										<th>Tipo Gasto</th>
+										<th>Descripción</th>
+										<th>Total</th>
+										<th>Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<form #formEliminar="ngForm" (ngSubmit)="onSubmit(formEliminar, true)">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Eliminar Gasto</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					¿Desea continuar con la eliminación?
+					
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="setDefaultData()">
+						<span class="fas fa-times mr-1"></span>
+						Cancelar
+					</button>
+                    <button id="buttonDelete" type="submit" class="btn btn-danger ml-2" [disabled]="!formEliminar.form.valid">
+                        <span class="fas fa-ban mr-1"></span>
+                        Eliminar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

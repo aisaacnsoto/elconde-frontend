@@ -1,0 +1,162 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-8">
+				<h1>Dashboard</h1>
+				<span class="text-muted">{{ dateString }}</span>
+            </div>
+            <div class="col-sm-4">
+				<input type="date" class="form-control shadow w-auto float-right" name="fecha" [(ngModel)]="fecha" (change)="onChange()" [disabled]="reloading">
+				<div class="spinner-border text-primary float-right ml-2 mr-2" role="status" *ngIf="reloading"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<!-- VENTAS DEL DÍA -->
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-info shadow">
+					<div class="inner">
+						<h3>{{ ventasDia }}</h3>
+						
+						<p>Ventas y Citas Atendidas</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-cut"></i>
+					</div>
+					<a [routerLink]="['/reportes/ventas-del-dia']" [queryParams]="{ return_to: 'dashboard' }" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<!-- APERTURA DE CAJA -->
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-success shadow">
+					<div class="inner">
+						<h3><sup style="font-size: 20px" class="mr-2">S/</sup>{{ aperturaCaja | number:'1.2-2' }}</h3>
+		
+						<p>Apertura de Caja</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-cash-register"></i>
+					</div>
+					<a [routerLink]="['/caja/apertura']" [queryParams]="{ return_to: 'dashboard' }" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<!-- CIERRE DE CAJA -->
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-warning shadow">
+					<div class="inner">
+						<h3><sup style="font-size: 20px" class="mr-2">S/</sup>{{ cierreCaja | number:'1.2-2' }}</h3>
+						
+						<p>Cierre de Caja</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-cash-register"></i>
+					</div>
+					<a [routerLink]="['/reportes/cierre-caja']" [queryParams]="{ return_to: 'dashboard' }" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-danger shadow">
+					<div class="inner">
+						<h3><sup style="font-size: 20px" class="mr-2">S/</sup>{{ gastosDia | number:'1.2-2' }}</h3>
+						
+						<p>Gastos</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-coins"></i>
+					</div>
+					<a [routerLink]="['/gastos']" [queryParams]="{ return_to: 'dashboard' }" class="small-box-footer">Más información <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="card shadow">
+					<div class="card-header">
+						<strong>Productividad (Mes)</strong>
+					</div>
+					<div class="card-body">
+						<div class="position-relative mb-4">
+							<canvas id="visitors-chart" height="200"></canvas>
+						</div>
+						<div class="d-flex justify-content-between">
+							<span class="text-muted">{{ fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</span>
+							<!-- <div>
+								<span class="mr-2">
+									<i class="fas fa-square text-primary"></i> Citas Atendidas
+								</span>
+							</div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="card shadow">
+					<div class="card-header">
+						<strong>Productividad de Barberos (Semana Actual)</strong>
+					</div>
+					<div class="card-body">
+
+						<div class="position-relative mb-4">
+							<canvas id="productividad" height="200"></canvas>
+						</div>
+
+						<div class="d-flex justify-content-between">
+							<span class="text-muted">{{ fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="card shadow">
+					<div class="card-header">
+						<strong>Clientes más Frecuentes</strong>
+					</div>
+					<div class="card-body">
+
+						<div class="position-relative mb-4">
+							<canvas id="sales-chart" height="200"></canvas>
+						</div>
+
+						<div class="d-flex justify-content-between">
+							<span class="text-muted">{{ fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</span>
+							<div>
+								<span class="mr-2">
+									<i class="fas fa-square text-primary"></i> Citas Atendidas
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="card shadow">
+					<div class="card-header">
+						<strong>Productos más Vendidos</strong>
+					</div>
+					<div class="card-body">
+
+						<div class="position-relative mb-4">
+							<canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+							<!-- <canvas id="donutChart" height="200"></canvas> -->
+						</div>
+
+						<div class="d-flex justify-content-between">
+							<span class="text-muted">{{ fechaActualizacion | date:'dd/MM/yyyy HH:mm' }}</span>
+						</div>
+
+					</div>
+					<!-- <div class="overlay" *ngIf="!ready">
+						<span class="text-primary"><i class="fas fa-3x fa-sync-alt fa-spin"></i></span>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+

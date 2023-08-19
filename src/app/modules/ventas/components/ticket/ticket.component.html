@@ -1,0 +1,91 @@
+<!-- <button class="btn btn-secondary" (click)="imprimirTicket()">Imprimir Ticket</button> -->
+<!-- TICKET -->
+<div class="d-none">
+	<div id="ticketVenta">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col">
+					<div class="row">
+						<div class="col text-center">
+							EL CONDE
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col text-center">
+							Domicilio Fiscal: AV. MARISCAL CACERES N° 820<br>
+							IQUITOS-MAYNAS-LORETO<br>
+							065-223337 / 942885556<br>
+							ventas@puntodventa.com.pe<br><br>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col text-center">
+							<strong>TICKET</strong>
+						</div>
+					</div>
+					<hr>
+
+					<div class="row" *ngIf="ticket.fecha || ticket.hora">
+						<div class="col">
+							EMISIÓN {{ ticket.fecha }} - {{ ticket.hora }}
+						</div>
+					</div>
+
+					<div class="row" *ngIf="ticket.get_usuario">
+						<div class="col">
+							<span>CAJERO</span><br>
+							<strong>{{ ticket.get_usuario.nombre_display }}</strong>
+						</div>
+					</div>
+
+					<div class="row" *ngIf="ticket.get_cliente">
+						<div class="col">
+							<span>CLIENTE</span><br>
+							<strong>{{ ticket.get_cliente.nombres }}</strong><br>
+
+							<span>RUC/DNI</span><br>
+							<strong>{{ ticket.get_cliente.num_doc }}</strong><br>
+
+							<span>DIRECCION</span><br>
+							<strong>{{ ticket.get_cliente.direccion }}</strong><br>
+						</div>
+					</div>
+					<hr>
+					<div class="table-responsive">
+						<table width="100%" cellspacing="0">
+							<thead>
+								<tr>
+									<td>Cantidad</td>
+									<td>Producto</td>
+									<td>Precio</td>
+									<td>Subtotal</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let detalle of ticket.detalles">
+									<th>{{ detalle.cantidad }}</th>
+									<th>{{ detalle.get_producto.producto.nombre }}</th>
+									<th>{{ detalle.precio | currency:'S/ ' }}</th>
+									<th>{{ detalle.importe | currency:'S/ ' }}</th>
+								</tr>
+							</tbody>
+							<tfoot *ngIf="ticket.total">
+								<tr>
+									<td colspan="3">Total</td>
+									<th>{{ ticket.total | currency:'S/ ' }}</th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col text-center">
+							*** GRACIAS POR SU COMPRA ***
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

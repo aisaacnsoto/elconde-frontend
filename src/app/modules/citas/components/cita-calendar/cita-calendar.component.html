@@ -1,0 +1,53 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/citas">Inicio</a></li>
+                    <li class="breadcrumb-item">Calendario</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Citas</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col">
+
+				<div class="card card-primary card-outline">
+					<div class="card-body p-0">
+						
+						<full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+					</div>
+					<!-- <div class="overlay" *ngIf="!ready">
+						<span class="text-primary"><i class="fas fa-3x fa-sync-alt fa-spin"></i></span>
+					</div> -->
+					<!-- <div class="overlay" *ngIf="loading"><i class="fas fa-10x fa-sync-alt fa-spin"></i></div> -->
+					<div class="card-footer">
+						<div class="d-flex flex-row justify-content-end mt-2">
+							<span class="mr-2">
+								<i class="fas fa-circle text-danger"></i> Pendiente
+							</span>
+							<span class="mr-2">
+								<i class="fas fa-circle text-warning"></i> En Proceso
+							</span>
+
+							<span>
+								<i class="fas fa-circle text-success"></i> Atendido
+							</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>

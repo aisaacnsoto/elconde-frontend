@@ -1,0 +1,198 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/reportes">Inicio</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Reporte de Ventas</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+				<div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-2 mb-0">
+                                <label for="fechaDesde">Desde</label>
+                                <input type="date" id="fechaDesde" class="form-control" [(ngModel)]="fechaDesde" required>
+                            </div>
+                            <div class="form-group col-sm-2 mb-0">
+                                <label for="fechaHasta">Hasta</label>
+                                <input type="date" id="fechaHasta" class="form-control" [(ngModel)]="fechaHasta" required>
+                            </div>
+                            <div class="form-group col-sm-2 mb-0">
+                                <label for="metodoPago">Método de Pago</label>
+                                <select id="metodoPago" class="form-control" [(ngModel)]="metodoPago" required>
+                                    <option value="-1">-- TODOS --</option>
+                                    <option value="EFECTIVO">EFECTIVO</option>
+                                    <option value="TARJETA">TARJETA</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <label for="producto">
+									<div class="form-group form-check mb-0">
+										<input type="checkbox" class="form-check-input" id="toggleProducto" (click)="toggleProducto()" [(ngModel)]="productoChecked">
+										<label class="form-check-label" for="toggleProducto">Producto</label>
+									</div>
+								</label>
+                                <select id="producto" class="form-control" [(ngModel)]="producto" required [disabled]="!productoChecked">
+                                    <option value="-1">-- TODOS --</option>
+                                    <option *ngFor="let producto of productos" [value]="producto.id">{{ producto.nombre }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <label for="servicio">
+									<div class="form-group form-check mb-0">
+										<input type="checkbox" class="form-check-input" id="toggleServicio" (click)="toggleServicio()" [(ngModel)]="servicioChecked">
+										<label class="form-check-label" for="toggleServicio">Servicio</label>
+									</div>
+								</label>
+                                <select id="servicio" class="form-control" [(ngModel)]="servicio" required [disabled]="!servicioChecked">
+                                    <option value="-1">-- TODOS --</option>
+                                    <option *ngFor="let servicio of servicios" [value]="servicio.id">{{ servicio.nombre }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-3 mb-0">
+                                <button id="btnConsultar" class="btn btn-primary" (click)="fetchData()">
+                                    <i class="fas fa-search mr-1"></i>
+                                    Consultar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <app-loader *ngIf="reloading"></app-loader> -->
+        
+		<div class="row" *ngIf="data">
+			<div class="col">
+
+                <div id="seccion-imprimir">
+
+                    <div class="row col">
+                        <h3 class="m-auto">Ventas</h3>
+                    </div>
+
+                    <hr>
+                    <div class="form-inline">
+                        Fecha: <strong><span class="ml-4">{{ data.fechaDesde | date:'dd/MM/yyyy' }} - {{ data.fechaHasta | date:'dd/MM/yyyy' }}</span></strong>
+                    </div>
+                    <hr>
+
+                    <div id="ventasAccordion">
+						<div class="card shadow" *ngIf="data.ranking.length > 0">
+							<div class="card-header">
+								<h4 class="card-title">
+									<a data-toggle="collapse" data-parent="#ventasAccordion" href="#collapseRanking">
+										<strong>Productos Más Vendidos</strong>
+									</a>
+								</h4>
+								<a class="float-right" data-toggle="collapse" data-parent="#ventasAccordion" href="#collapseRanking">
+									<span><strong>{{ data.total | currency:'S/ ' }}</strong></span>
+								</a>
+							</div>
+							<div id="collapseRanking" class="panel-collapse collapse show">
+								<div class="card-body p-0">
+									<div class="table-responsive">
+										<table class="table table-striped m-0" width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+                                                    <th scope="col">Descripción</th>
+                                                    <th scope="col">Cantidad</th>
+                                                    <th scope="col">Unidad</th>
+                                                    <th scope="col">Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let row of data.ranking; let i = index">
+													<td>{{ (i + 1) }}</td>
+													<td>{{ row.descripcion }}</td>
+													<td>{{ row.cantidad }}</td>
+													<td>{{ row.unidad }}</td>
+													<td class="text-right text-nowrap">{{ row.total | currency:'S/ ' }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card shadow" *ngFor="let registro of data.registros; let i = index">
+							<div class="card-header">
+								<h4 class="card-title">
+									<a data-toggle="collapse" data-parent="#ventasAccordion" href="#collapse{{ i }}">
+										<strong>{{ registro.fecha | date:'dd/MM/yyyy' }}</strong>
+									</a>
+								</h4>
+								<a class="float-right" data-toggle="collapse" data-parent="#ventasAccordion" href="#collapse{{ i }}">
+									<span><strong>{{ registro.total | currency:'S/ ' }}</strong></span>
+								</a>
+							</div>
+							<div id="collapse{{ i }}" class="panel-collapse collapse show">
+								<div class="card-body p-0">
+									<div class="table-responsive">
+										<table class="table table-striped m-0" width="100%" cellspacing="0">
+											<thead>
+												<tr>
+													<th scope="col">#</th>
+                                                    <th scope="col">Fecha</th>
+                                                    <th scope="col">Pago</th>
+                                                    <th scope="col">Cantidad</th>
+                                                    <th scope="col">Descripción</th>
+                                                    <th scope="col">Unidad</th>
+                                                    <th scope="col">Precio</th>
+                                                    <th scope="col">Total</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let venta of registro.ventas; let j = index">
+													<td>{{ (j + 1) }}</td>
+													<td>{{ venta.fecha | date:'dd/MM/yyyy' }}</td>
+													<td>{{ venta.metodo_pago }}</td>
+													<td>{{ venta.cantidad }}</td>
+													<td>{{ venta.descripcion }}</td>
+													<td>{{ venta.unidad }}</td>
+													<td class="text-right text-nowrap">{{ venta.importe | currency:'S/ ' }}</td>
+													<td class="text-right text-nowrap">{{ venta.total | currency:'S/ ' }}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card card-secondary shadow">
+							<div class="card-header">
+								<h4 class="card-title">
+									<strong>TOTAL VENTAS</strong>
+								</h4>
+								<span class="float-right"><strong>{{ data.total | currency:'S/ ' }}</strong></span>
+							</div>
+						</div>
+					</div>
+
+                </div>
+                
+                <div class="row col">
+                    <button class="btn btn-primary" (click)="imprimir()"><i class="fas fa-print mr-1"></i>Imprimir</button>
+                </div>
+
+			</div>
+		</div>
+	</div>
+</section>

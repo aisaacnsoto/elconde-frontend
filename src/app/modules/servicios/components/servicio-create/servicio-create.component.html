@@ -1,0 +1,106 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/servicios">Inicio</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col text-center">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Servicio</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+                                        
+										<div class="form-group row">
+                                            
+                                            <label for="nombre" class="col-md-4 col-form-label text-md-right">Nombre</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="nombre" name="nombre" class="form-control" #nombre="ngModel" [(ngModel)]="servicio.nombre" required focusOnShow [class.is-invalid]="nombre.touched && !nombre.valid" [class.is-valid]="nombre.touched && nombre.valid">
+                                                <div class="invalid-feedback">
+                                                    El nombre es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="precio" class="col-md-4 col-form-label text-md-right">Precio</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="precio" name="precio" class="form-control" #precio="ngModel" [(ngModel)]="servicio.precio" required [class.is-invalid]="precio.touched && !precio.valid" [class.is-valid]="precio.touched && precio.valid">
+                                                <div class="invalid-feedback">
+                                                    El precio es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                            </div>
+                                            <label for="tiempo_promedio" class="col-md-4 col-form-label text-md-right">Tiempo Promedio</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="tiempo_promedio" name="tiempo_promedio" class="form-control" #tiempo_promedio="ngModel" [(ngModel)]="servicio.tiempo_promedio" required [class.is-invalid]="tiempo_promedio.touched && !tiempo_promedio.valid" [class.is-valid]="tiempo_promedio.touched && tiempo_promedio.valid">
+                                                <div class="invalid-feedback">
+                                                    El tiempo promedio es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-md-12">
+                                            </div>
+                                            <label for="pago_comision" class="col-md-4 col-form-label text-md-right">Comisión (%)</label>
+                                            <div class="col-md-6">
+                                                <input type="number" id="pago_comision" name="pago_comision" class="form-control" #pago_comision="ngModel" [(ngModel)]="servicio.pago_comision" required [class.is-invalid]="pago_comision.touched && !pago_comision.valid" [class.is-valid]="pago_comision.touched && pago_comision.valid">
+                                                <div class="invalid-feedback">
+                                                    El porcentaje es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+										<div class="form-group row">
+                                            <label for="activo" class="col-md-4 col-form-label text-md-right">Estado</label>
+											<div class="col-md-6">
+                                                <select id="activo" name="activo" class="form-control" #activo="ngModel" [(ngModel)]="servicio.activo" required [class.is-invalid]="activo.touched && !activo.valid" [class.is-valid]="activo.touched && activo.valid">
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+											</div>
+										</div>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>

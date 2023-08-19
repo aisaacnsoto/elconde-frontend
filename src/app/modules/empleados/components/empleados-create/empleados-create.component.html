@@ -1,0 +1,180 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/empleados">Inicio</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col text-center">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Empleado</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+                                                            
+                                        <div class="form-group row">
+                                            <label for="nombres" class="col-md-4 col-form-label text-md-right">Nombres</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="nombres" name="nombres" class="form-control" #nombres="ngModel" [(ngModel)]="empleado.nombres" required focusOnShow [class.is-invalid]="nombres.touched && !nombres.valid" [class.is-valid]="nombres.touched && nombres.valid">
+                                                <div class="invalid-feedback">
+                                                    Los nombres son obligatorios.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="ape_paterno" class="col-md-4 col-form-label text-md-right">Apelido Paterno</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="ape_paterno" name="ape_paterno" class="form-control" #ape_paterno="ngModel" [(ngModel)]="empleado.ape_paterno" required [class.is-invalid]="ape_paterno.touched && !ape_paterno.valid" [class.is-valid]="ape_paterno.touched && ape_paterno.valid">
+                                                <div class="invalid-feedback">
+                                                    El apellido paterno es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="ape_materno" class="col-md-4 col-form-label text-md-right">Apelido Materno</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="ape_materno" name="ape_materno" class="form-control" #ape_materno="ngModel" [(ngModel)]="empleado.ape_materno" required [class.is-invalid]="ape_materno.touched && !ape_materno.valid" [class.is-valid]="ape_materno.touched && ape_materno.valid">
+                                                <div class="invalid-feedback">
+                                                    El apellido materno es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="tipo_doc" class="col-md-4 col-form-label text-md-right">Tipo Documento</label>
+                                            <div class="col-md-6">
+                                                <select id="tipo_doc" name="tipo_doc" class="form-control" #tipo_doc="ngModel" [(ngModel)]="empleado.tipo_doc" required [class.is-invalid]="tipo_doc.touched && !tipo_doc.valid" [class.is-valid]="tipo_doc.touched && tipo_doc.valid">
+                                                    <option>DNI</option>
+                                                    <option>CE</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    El tipo de documento es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="num_doc" class="col-md-4 col-form-label text-md-right">Nro Documento</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="num_doc" name="num_doc" class="form-control" #num_doc="ngModel" [(ngModel)]="empleado.num_doc" required [class.is-invalid]="num_doc.touched && !num_doc.valid" [class.is-valid]="num_doc.touched && num_doc.valid">
+                                                <div class="invalid-feedback">
+                                                    El número de documento es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="telefono" class="col-md-4 col-form-label text-md-right">Teléfono</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="telefono" name="telefono" class="form-control" #telefono="ngModel" [(ngModel)]="empleado.telefono" required [class.is-invalid]="telefono.touched && !telefono.valid" [class.is-valid]="telefono.touched && telefono.valid">
+                                                <div class="invalid-feedback">
+                                                    El número telefónico es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="correo" class="col-md-4 col-form-label text-md-right">Correo electrónico</label>
+                                            <div class="col-md-6">
+                                                <input type="email" id="correo" name="correo" class="form-control" #correo="ngModel" [(ngModel)]="empleado.correo" required [class.is-invalid]="correo.touched && !correo.valid" [class.is-valid]="correo.touched && correo.valid">
+                                                <div class="invalid-feedback">
+                                                    El correo electrónico es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="direccion" class="col-md-4 col-form-label text-md-right">Dirección</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="direccion" name="direccion" class="form-control" #direccion="ngModel" [(ngModel)]="empleado.direccion" required [class.is-invalid]="direccion.touched && !direccion.valid" [class.is-valid]="direccion.touched && direccion.valid">
+                                                <div class="invalid-feedback">
+                                                    La dirección es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="fecha_ingreso_laboral" class="col-md-4 col-form-label text-md-right">Fecha de Ingreso Laboral:</label>
+                                            <div class="col-md-6">
+                                                <input type="date" id="fecha_ingreso_laboral" name="fecha_ingreso_laboral" class="form-control" #fecha_ingreso_laboral="ngModel" [(ngModel)]="empleado.fecha_ingreso_laboral" required [class.is-invalid]="fecha_ingreso_laboral.touched && !fecha_ingreso_laboral.valid" [class.is-valid]="fecha_ingreso_laboral.touched && fecha_ingreso_laboral.valid">
+                                                <div class="invalid-feedback">
+                                                    La fecha de ingreso laboral es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="sexo" class="col-md-4 col-form-label text-md-right">Género</label>
+                                            <div class="col-md-6">
+                                                <select id="sexo" name="sexo" class="form-control" #sexo="ngModel" [(ngModel)]="empleado.sexo" required [class.is-invalid]="sexo.touched && !sexo.valid" [class.is-valid]="sexo.touched && sexo.valid">
+                                                    <option>MASCULINO</option>
+                                                    <option>FEMENINO</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    El género es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="fecha_nac" class="col-md-4 col-form-label text-md-right">Fecha de Nacimiento:</label>
+                                            <div class="col-md-6">
+                                                <input type="date" id="fecha_nac" name="fecha_nac" class="form-control" #fecha_nac="ngModel" [(ngModel)]="empleado.fecha_nac" required [class.is-invalid]="fecha_nac.touched && !fecha_nac.valid" [class.is-valid]="fecha_nac.touched && fecha_nac.valid">
+                                                <div class="invalid-feedback">
+                                                    La fecha de nacimiento es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="cargo" class="col-md-4 col-form-label text-md-right">Cargo</label>
+                                            <div class="col-md-6">
+                                                <select id="cargo" name="cargo" class="form-control" #cargo="ngModel" [(ngModel)]="empleado.cargo" required selectDefaultValue="-1" [class.is-invalid]="cargo.touched && !cargo.valid" [class.is-valid]="cargo.touched && cargo.valid">
+                                                    <option value="1">BARBERO</option>
+                                                    <option value="2">SECRETARIA</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Por favor, seleccione un cargo.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>

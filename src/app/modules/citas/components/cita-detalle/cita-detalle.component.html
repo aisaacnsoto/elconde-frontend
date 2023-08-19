@@ -1,0 +1,191 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/citas">Inicio</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/citas">Calendario</a></li>
+                    <li class="breadcrumb-item active">Información</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>
+                    Información sobre la Cita
+                    <span class="badge badge-success ml-2" *ngIf="atentidoRestriction">Atendido</span>
+                </h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="btn-group float-right" role="group">
+                    <button class="btn btn-info" (click)="goToEdit()" [disabled]="user.rol != 1 && atentidoRestriction">
+                        <i class="fas fa-edit mr-1"></i>Editar
+                    </button>
+                    <button class="btn btn-danger" (click)="delete()" *ngIf="user.rol == 1">
+                        <i class="fas fa-trash-alt mr-1"></i>Eliminar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+        <form #formRegistrar="ngForm" (ngSubmit)="onCitaSubmit()">
+        
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <label for="cliente">Cliente</label>
+                                    <input type="text" id="cliente" name="cliente" class="form-control" [value]="cita.get_cliente.nombres+' '+cita.get_cliente.apellidos" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <label for="num_doc">N° Identidad</label>
+                                    <input type="text" id="num_doc" name="num_doc" class="form-control" [value]="cita.get_cliente.num_doc" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="text" id="telefono" name="telefono" class="form-control" [value]="cita.get_cliente.telefono" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <label for="empleado">Barbero</label>
+                                    <input type="text" id="empleado" name="empleado" class="form-control" [value]="cita.get_empleado.nombres+' '+cita.get_empleado.ape_paterno+' '+cita.get_empleado.ape_materno" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <label for="fecha">Fecha</label>
+                                    <input type="date" id="fecha" name="fecha" class="form-control" [value]="cita.fecha" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="hora">Hora</label>
+                                    <input type="time" id="hora" name="hora" class="form-control" [value]="cita.hora" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>SERVICIOS</strong>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-2"><label>Cantidad</label></div>
+                                <div class="col-md-4"><label>Servicio</label></div>
+                                <div class="col-md-2"><label>Precio</label></div>
+                                <div class="col-md-2"><label>Descuento %</label></div>
+                                <div class="col-md-2"><label>Subtotal</label></div>
+                            </div>
+                            <div class="row mb-3" *ngFor="let detalle of cita.get_detalles; index as i">
+                                <div class="col-md-2">
+                                    <input type="number" name="cantidad[{{i}}]" class="form-control" [value]="cita.get_detalles[i].cantidad" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="servicio[{{i}}]" class="form-control" [value]="cita.get_detalles[i].get_servicio.nombre" readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" name="precio[{{i}}]" class="form-control" [value]="cita.get_detalles[i].precio" readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" name="descuento{{i}}]" class="form-control" [value]="cita.get_detalles[i].descuento" readonly>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" name="importe[{{i}}]" class="form-control" [value]="cita.get_detalles[i].importe" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>ESTADO</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="row col">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="pendiente" name="estado" class="custom-control-input" [checked]="cita.estado == 'PENDIENTE'" (change)="cita.estado = 'PENDIENTE'" [disabled]="user.rol != 1 && (enProcesoRestriction || atentidoRestriction)">
+                                    <label class="custom-control-label" for="pendiente">PENDIENTE</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="en-proceso" name="estado" class="custom-control-input" [checked]="cita.estado == 'EN PROCESO'" (change)="cita.estado = 'EN PROCESO'" [disabled]="user.rol != 1 && atentidoRestriction">
+                                    <label class="custom-control-label" for="en-proceso">EN PROCESO</label>
+                                </div>
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="atendido" name="estado" class="custom-control-input" [checked]="cita.estado == 'ATENDIDO'" (change)="cita.estado = 'ATENDIDO'" [disabled]="user.rol != 1 && atentidoRestriction">
+                                    <label class="custom-control-label" for="atendido">ATENDIDO</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-inline">
+                                <label for="total" class="mr-1">Total:</label>
+                                <span>{{ cita.total | currency:'S/ ' }}</span>
+
+                                <select name="metodo_pago" id="metodo_pago" class="form-control ml-3 mr-2" [(ngModel)]="cita.metodo_pago" [disabled]="user.rol != 1 && atentidoRestriction" [class.d-none]="!enProcesoRestriction && !atentidoRestriction">
+                                    <option>EFECTIVO</option>
+                                    <option>TARJETA</option>
+                                </select>
+                                
+                                <div class="col"></div>
+                                <button type="submit" class="btn btn-success" [disabled]="updating || (user.rol != 1 && atentidoRestriction)">
+                                    <i class="fas fa-check" *ngIf="!updating"></i>
+                                    <span class="ml-2" *ngIf="!updating">Guardar</span>
+                            
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" *ngIf="updating"></span>
+                                    <span class="ml-2" *ngIf="updating">Guardando</span>
+                                </button>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<form #formEliminar="ngForm" (ngSubmit)="onDelete()">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Eliminar Cita</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					¿Desea continuar con la eliminación?
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<i class="fas fa-times mr-1"></i>
+						Cancelar
+					</button>
+					<button id="buttonDelete" type="submit" class="btn btn-danger">
+                        <i class="fas fa-ban mr-1"></i>
+                        Eliminar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

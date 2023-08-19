@@ -1,0 +1,150 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/consumos-internos']">Inicio</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <h1>Consumos Internos</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-4">
+                <form #registroForm="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+                    <div class="card card-primary card-outline">
+
+						<div class="card-body">
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <label for="empleado">Empleado</label>
+                                    <select id="empleado" name="empleado" class="form-control" #empleado="ngModel" [(ngModel)]="consumoInterno.empleado_id" required selectDefaultValue="-1">
+                                        <option value="-1">-- Seleccione un Empleado --</option>
+                                        <option *ngFor="let empleado of empleados" [value]="empleado.id">{{ empleado.ape_paterno+' '+empleado.ape_materno+' '+empleado.nombres }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <label for="cantidad">Producto</label>
+                            <div class="form-row">
+                                <div class="form-group col-3">
+                                    <input type="number" id="cantidad" name="cantidad" class="form-control" #cantidad="ngModel" [(ngModel)]="consumoInterno.cantidad" required min="1" max="10">
+                                </div>
+                                <div class="form-group col-9">
+                                    <div class="input-group">
+                                        <input type="text" id="producto" name="producto" class="form-control" #producto="ngModel" [(ngModel)]="consumoInterno.producto_nombre" required readonly>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-producto-consumo"><i class="fas fa-search mr-1"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <label for="fecha">Fecha</label>
+                                    <input type="date" id="fecha" name="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="consumoInterno.fecha" required>
+                                </div>
+                            </div>
+						</div>
+						<div class="card-footer">
+                            <div class="form-inline">
+                                <button type="button" class="btn-wide btn btn-default" (click)="setDefaultData()" *ngIf="flags.edit">
+                                    <span class="fas fa-times mr-1"></span>
+                                    Cancelar
+                                </button>
+                                <div class="col"></div>
+                                <button id="buttonRegister" type="submit" class="btn-wide btn btn-success ml-2" [disabled]="!registroForm.form.valid">
+                                    <span class="fas fa-check mr-1"></span>
+                                    Guardar
+                                </button>
+                            </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-8">
+				<div class="card card-primary card-outline">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="table table-bordered table-striped table-hover" id="dtConsumosInternos" width="100%" cellspacing="0">
+								<thead class="bg-primary text-light">
+									<tr>
+										<th>Id</th>
+										<th>Empleado</th>
+										<th>Cantidad</th>
+										<th>Producto</th>
+										<th>Unidad</th>
+										<th>Fecha</th>
+										<th>Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<div class="modal fade" id="modal-producto-consumo">
+	<div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Buscar Producto</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <app-consumo-buscar-producto (selectedProduct)="onSelectProducto($event)"></app-consumo-buscar-producto>
+                
+            </div>
+        </div>
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<form #formEliminar="ngForm" (ngSubmit)="onSubmit(true)">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Eliminar Consumo Interno</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					¿Desea continuar con la eliminación?
+					
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="setDefaultData()">
+						<span class="fas fa-times mr-1"></span>
+						Cancelar
+					</button>
+                    <button id="buttonDelete" type="submit" class="btn btn-danger ml-2" [disabled]="!formEliminar.form.valid">
+                        <span class="fas fa-ban mr-1"></span>
+                        Eliminar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

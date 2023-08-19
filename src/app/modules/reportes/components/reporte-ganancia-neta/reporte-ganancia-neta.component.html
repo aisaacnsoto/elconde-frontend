@@ -1,0 +1,121 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/reportes">Inicio</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Reporte de Ganancia Neta</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+				<div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-sm-6 mb-0">
+                                <label for="fechaDesde">Desde:</label>
+                                <input type="date"  id="fechaDesde" class="form-control" [(ngModel)]="fechaDesde" (change)="fetchData()">
+                            </div>
+                            <div class="form-group col-sm-6 mb-0">
+                                <label for="fechaHasta">Hasta:</label>
+                                <input type="date" id="fechaHasta" class="form-control" [(ngModel)]="fechaHasta" (change)="fetchData()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <app-loader *ngIf="!data"></app-loader>
+        
+		<div class="row" *ngIf="data">
+			<div class="col">
+
+                <div id="seccion-imprimir">
+
+                    <div class="row col">
+                        <h3 class="m-auto">Ganancia Neta</h3>
+                    </div>
+
+                    <hr>
+                    <div class="form-inline">
+                        Fecha: <strong><span class="ml-4">{{ data.fechaDesde | date:'dd/MM/yyyy' }} - {{ data.fechaHasta | date:'dd/MM/yyyy' }}</span></strong>
+                    </div>
+					<hr>
+					
+                    <div class="card shadow" *ngIf="data.rentabilidad > 0">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                <a>
+                                    <strong>RENTABILIDAD</strong>
+                                </a>
+                            </h4>
+                            <a class="float-right">
+                                <span><strong>{{ data.rentabilidad | currency:'S/ ' }}</strong></span>
+                            </a>
+                        </div>
+                    </div>
+					
+                    <div class="card shadow" *ngIf="data.gastos > 0">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                <a>
+                                    <strong>GASTOS EN EFECTIVO</strong>
+                                </a>
+                            </h4>
+                            <a class="float-right">
+                                <span><strong>{{ data.gastos * -1 | currency:'S/ ' }}</strong></span>
+                            </a>
+                        </div>
+                    </div>
+					
+                    <div class="card shadow" *ngIf="data.consumos > 0">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                <a>
+                                    <strong>CONSUMOS INTERNOS</strong>
+                                </a>
+                            </h4>
+                            <a class="float-right">
+                                <span><strong>{{ data.consumos * -1 | currency:'S/ ' }}</strong></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card shadow" *ngFor="let row of data.adicionales">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                <a>
+                                    <strong>{{ row.nombre | uppercase }}</strong>
+                                </a>
+                            </h4>
+                            <a class="float-right">
+                                <span><strong>{{ row.monto * -1 | currency:'S/ ' }}</strong></span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card card-secondary shadow">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                <strong>TOTAL GANANCIA NETA</strong>
+                            </h4>
+                            <span class="float-right"><strong>{{ data.total | currency:'S/ ' }}</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,220 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/citas">Inicio</a></li>
+                    <li class="breadcrumb-item">{{ edit ? 'Editar' : 'Reservar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ edit ? 'Editar' : 'Reservar' }} Cita</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+
+				<form #citaForm="ngForm">
+					<div class="card card-primary card-outline">
+						<div class="card-body">
+							<input type="hidden" name="cliente" [(ngModel)]="cita.cliente" required>
+							<div class="row">
+								<div class="col">
+									<label for="display_cliente">Cliente</label>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div class="input-group">
+										<input type="text" id="display_cliente" class="form-control" required [value]="cliente.nombres+' '+cliente.apellidos" readonly>
+										<div class="input-group-append" id="button-addon4">
+											<button type="button" id="btnBuscarCliente" class="btn btn-primary" data-toggle="modal" data-target="#modal-buscar-cliente"><i class="fas fa-search mr-1"></i>Buscar</button>
+											<button type="button" class="btn btn-warning" (click)="nuevoCliente()"><i class="fas fa-plus mr-1"></i>Nuevo</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col">
+									<div *ngIf="showDsctVIP">
+										<button type="button" class="close float-left mr-1" (click)="quitarDescuentos()"><span>&times;</span></button>
+										<span class="text-warning"><i class="fas fa-crown mr-1"></i><strong>Descuento por Cliente VIP</strong></span>
+									</div>
+									<div *ngIf="showDsctRecom">
+										<button type="button" class="close float-left mr-1" (click)="quitarDescuentos()"><span>&times;</span></button>
+										<span class="text-primary"><i class="fas fa-user-friends mr-1"></i><strong>Descuento por Recomendaciones</strong></span>
+									</div>
+									<div *ngIf="showDsctCumple">
+										<button type="button" class="close float-left mr-1" (click)="quitarDescuentos()"><span>&times;</span></button>
+										<span class="text-pink"><i class="fas fa-birthday-cake mr-1"></i><strong>Descuento por Cumpleaños</strong></span>
+										
+									</div>
+
+									<div *ngIf="showDsctTraba">
+										<button type="button" class="close float-left mr-1" (click)="quitarDescuentos()"><span>&times;</span></button>
+										<span class="text-orange"><i class="fas fa-briefcase mr-1"></i><strong>Descuento por Trabajador</strong></span>
+									</div>
+
+									<div *ngIf="showDsct">
+										<button type="button" class="close float-left mr-1" (click)="quitarDescuentos()"><span>&times;</span></button>
+										<span class="text-danger"><i class="fas fa-certificate mr-1"></i><strong>Descuento {{ labelDsct }}</strong></span>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<label for="empleado">Barbero</label>
+									<select id="empleado" name="empleado" class="form-control" #empleado="ngModel" [(ngModel)]="cita.empleado" required selectDefaultValue="-1">
+										<option value="-1">-- Seleccione un Barbero --</option>
+										<option *ngFor="let empleado of empleados" [value]="empleado.id">{{ empleado.nombres+' '+empleado.ape_paterno+' '+empleado.ape_materno }}</option>
+									</select>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-6">
+									<label for="fecha">Fecha</label>
+									<input type="date" id="fecha" name="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="cita.fecha" required [readonly]="usuario.rol != 1">
+								</div>
+								<div class="col-6">
+									<label for="hora">Hora</label>
+									<input type="time" id="hora" name="hora" class="form-control" #hora="ngModel" [(ngModel)]="cita.hora" required>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-md-8">
+				<div class="card card-primary card-outline">
+					<div class="card-header">
+						<div class="row justify-content-between">
+							<strong>Servicios</strong>
+							<div>
+								<strong>{{ cita.tiempo_promedio }} minutos</strong>
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<form #agregarServicio="ngForm" (ngSubmit)="onServicioSubmit()">
+							<div class="row">
+								<div class="col-2">
+									<input type="number" name="cantidad" class="form-control" placeholder="Cantidad" #cantidad="ngModel" [(ngModel)]="fila.cantidad" min="1">
+								</div>
+								
+								<div class="col-8">
+									
+									<ng-autocomplete 
+										[data]="servicios"
+										[searchKeyword]="keyword"
+										(selected)='selectEvent($event)'
+										[itemTemplate]="itemTemplate"
+										[notFoundTemplate]="notFoundTemplate">                                 
+									</ng-autocomplete>
+									
+									<ng-template #itemTemplate let-item>
+										<a [innerHTML]="item.nombre"></a>
+									</ng-template>
+									
+									<ng-template #notFoundTemplate>
+										<div>No se encontraron resultados.</div>
+									</ng-template>
+
+								</div>
+								<div class="col-2">
+									<button type="submit" class="btn btn-primary">Agregar</button>
+								</div>
+							</div>
+						</form>
+						<hr>
+						<div class="row mb-3">
+							<div class="col-2"><label>Cantidad</label></div>
+							<div class="col-3"><label>Servicio</label></div>
+							<div class="col-2"><label>Precio</label></div>
+							<div class="col-2"><label>Descuento %</label></div>
+							<div class="col-2"><label>Subtotal</label></div>
+							<div class="col-1"></div>
+						</div>
+						<form #formDetalle="ngForm">
+							<div class="row mb-3" *ngFor="let detalle of cita.detalles; index as i">
+								<div class="col-2">
+									<input type="number" name="cantidad[{{i}}]" class="form-control" [(ngModel)]="cita.detalles[i].cantidad" (change)="onCantidadChange(i)" min="1">
+								</div>
+								<div class="col-3">
+									<select name="servicio[{{i}}]" class="form-control" [(ngModel)]="cita.detalles[i].get_servicio.id" (change)="onServicioChange($event, i)" disabled>
+										<option *ngFor="let servicio of servicios; index as i" [value]="servicio.id">{{ servicio.nombre }}</option>
+									</select>
+								</div>
+								<div class="col-2">
+									<input type="text" name="precio[{{i}}]" class="form-control" [(ngModel)]="cita.detalles[i].precio" (change)="onPrecioChange(i)" [disabled]="usuario.rol != 1">
+								</div>
+								<div class="col-2">
+									<input type="number" name="descuento[{{i}}]" class="form-control" min="0" max="100" [(ngModel)]="cita.detalles[i].descuento" (change)="onDescuentoChange(i)" [disabled]="usuario.rol != 1">
+								</div>
+								<div class="col-2">
+									<input type="text" name="importe[{{i}}]" class="form-control" value="{{ cita.detalles[i].importe | currency:'S/ ' }}" disabled>
+								</div>
+								<div class="col-1">
+									<button type="button" class="btn btn-danger" (click)="onRemoveDetalle(i)"><i class="fas fa-times"></i></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-body">
+						<div class="form-inline">
+							<label for="total" class="mr-1">Total:</label>
+							<span>{{ cita.total | currency:'S/ ' }}</span>
+							<div class="col"></div>
+							<div class="form-inline">
+								<div id="spinnerRegister" class="spinner-border spinner-border-lg text-success m-auto" role="status" style="display: none;">
+									<span class="sr-only">Loading...</span>
+								</div>
+								<button id="buttonRegister" (click)="onSubmit()" class="btn-wide btn btn-success ml-2" [disabled]="!citaForm.form.valid">
+									<span class="fas fa-check mr-1"></span>
+									Guardar
+								</button>
+							</div>
+						</div>
+		
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+			</div>
+		</div>
+	</div>
+</section>
+
+<app-registrar-cliente (success)="onRegisterCliente($event)"></app-registrar-cliente>
+
+<div class="modal fade" id="modal-buscar-cliente">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Buscar Cliente</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<app-cita-buscar-cliente (selectedCliente)="buscarCliente($event)"></app-cita-buscar-cliente>
+
+			</div>
+		</div>
+	</div>
+</div>

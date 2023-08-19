@@ -1,0 +1,267 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+	<a [routerLink]="['/']" class="brand-link">
+		<img src="assets/logo-circle.png" alt="El Conde Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+		<span class="brand-text font-weight-light">
+			El Conde Barbershop
+			<!-- <img src="assets/logo-text.png" alt="El Conde Logo" class="img-fluid" style="opacity: .8"> -->
+		</span>
+	</a>
+
+	<div class="sidebar">
+		<nav class="mt-2">
+			<ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+				
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(1) > -1)">
+					<a class="nav-link" [routerLink]="['/dashboard']" [routerLinkActive]="['active']">
+						<i class="fas fa-chart-bar nav-icon"></i>
+						<p>Dashboard</p>
+					</a>
+				</li>
+				
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(2) > -1)">
+					<a class="nav-link" [routerLink]="['/citas']" [routerLinkActive]="['active']">
+						<i class="nav-icon fas fa-calendar-alt"></i>
+						<p>Citas</p>
+					</a>
+				</li>
+
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(3) > -1)">
+					<a class="nav-link" [routerLink]="['/ventas']" [routerLinkActive]="['active']">
+						<i class="nav-icon fas fa-shopping-bag"></i>
+						<p>Ventas</p>
+					</a>
+				</li>
+				<!-- <li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(4) > -1)">
+					<a class="nav-link" [routerLink]="['/gastos']" [routerLinkActive]="['active']">
+						<i class="fas fa-coins nav-icon"></i>
+						<p>Gastos</p>
+					</a>
+				</li> -->
+				<li class="nav-item has-treeview" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(4) > -1)">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-coins"></i>
+						<p>
+							Gastos
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/gastos']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Efectivo</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/gastos/reportes/pago-personal']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Pagos a Personal</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="nav-item has-treeview" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(5) > -1)">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-cash-register"></i>
+						<p>
+							Caja
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/caja/apertura']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Apertura</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/caja/cierre']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Cierre</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(6) > -1)">
+					<a class="nav-link" [routerLink]="['/clientes']" [routerLinkActive]="['active']">
+						<i class="fas fa-users nav-icon"></i>
+						<p>Clientes</p>
+					</a>
+				</li>
+				
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(7) > -1)">
+					<a class="nav-link" [routerLink]="['/compras']" [routerLinkActive]="['active']">
+						<i class="fas fa-dolly nav-icon"></i>
+						<p>Compras</p>
+					</a>
+				</li>
+
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(8) > -1)">
+					<a class="nav-link" [routerLink]="['/proveedores']" [routerLinkActive]="['active']">
+						<i class="fas fa-shipping-fast nav-icon"></i>
+						<p>Proveedores</p>
+					</a>
+				</li>
+
+				<li class="nav-item has-treeview" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(9) > -1)">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-warehouse"></i>
+						<p>
+							Almacén
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/productos']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Productos</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/inventarios']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Inventario</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/kardex']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Kárdex</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(10) > -1)">
+					<a class="nav-link" [routerLink]="['/servicios']" [routerLinkActive]="['active']">
+						<i class="fas fa-cut nav-icon"></i>
+						<p>Servicios</p>
+					</a>
+				</li>
+				
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(11) > -1)">
+					<a class="nav-link" [routerLink]="['/asignaciones']" [routerLinkActive]="['active']">
+						<i class="nav-icon fas fa-brush"></i>
+						<p>Asignaciones</p>
+					</a>
+				</li>
+
+				<li class="nav-item" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(14) > -1)">
+					<a class="nav-link" [routerLink]="['/consumos-internos']" [routerLinkActive]="['active']">
+						<i class="fas fa-spray-can nav-icon"></i>
+						<p>Consumos Internos</p>
+					</a>
+				</li>
+
+				<li class="nav-item" *ngIf="user.rol==1">
+					<a class="nav-link" [routerLink]="['/pago-adicional']" [routerLinkActive]="['active']">
+						<i class="fas fa-coins nav-icon"></i>
+						<p>Pagos Adicionales</p>
+					</a>
+				</li>
+
+				<!-- REPORTES -->
+				<li class="nav-item has-treeview" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(12) > -1)">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-chart-line"></i>
+						<p>
+							Reportes
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/stock']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Stock</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/clientes-citas']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Citas</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/cierre-caja']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Cierre de Caja</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/pago-personal']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Pago a Personal</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/ventas']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Ventas</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/gastos']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Gastos Mensuales</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/consumos-internos']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Consumos Internos</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/rentabilidad']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Rentabilidad</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/reportes/ganancia-neta']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Ganancia Neta</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<!-- MANTENIMIENTO -->
+				<li class="nav-item has-treeview" *ngIf="user.rol==1 || (user.permisos && user.permisos.indexOf(13) > -1)">
+					<a href="#" class="nav-link">
+						<i class="nav-icon fas fa-cog"></i>
+						<p>
+							Configuración
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/usuarios']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Usuarios</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/empleados']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Empleados</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" [routerLink]="['/promociones']" [routerLinkActive]="['active']">
+								<i class="far fa-circle nav-icon"></i>
+								<p>Promociones</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</aside>

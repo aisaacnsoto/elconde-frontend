@@ -1,0 +1,72 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/productos">Inicio</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/productos">Productos</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/productos/unidades-medida">Unidades de Medida</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Unidad de Medida</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+                                        
+                                        <div class="form-group row">
+                                            <label for="unidad" class="col-md-4 col-form-label text-md-right">Nombre</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="unidad" name="unidad" class="form-control" #unidad="ngModel" [(ngModel)]="unidadMedida.unidad" required focusOnShow [class.is-invalid]="unidad.touched && !unidad.valid" [class.is-valid]="unidad.touched && unidad.valid">
+                                                <div class="invalid-feedback">
+                                                    El nombre es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="factor" class="col-md-4 col-form-label text-md-right">Factor</label>
+                                            <div class="col-md-6">
+                                                <input type="number" id="factor" name="factor" class="form-control" #factor="ngModel" [(ngModel)]="unidadMedida.factor" required min="1" [class.is-invalid]="factor.touched && !factor.valid" [class.is-valid]="factor.touched && factor.valid">
+                                                <div class="invalid-feedback">
+                                                    El factor es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>

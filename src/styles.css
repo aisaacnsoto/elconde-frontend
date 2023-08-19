@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+.row-red {
+	background: #ffcdd2 !important;
+}
+.row-blue {
+	background: #bbdefb !important;
+}
+.row-green {
+	background: #c8e6c9 !important;
+}
+.row-yellow {
+	background: #fff9c4 !important;
+}

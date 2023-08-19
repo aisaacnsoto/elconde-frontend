@@ -1,0 +1,103 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/inventarios">Inicio</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Inventario</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col">
+                
+                <form #formRegister="ngForm" (ngSubmit)="onSubmit()">
+					<div class="card card-primary card-outline">
+						<div class="card-body">
+	
+							<div class="row mb-4">
+								<div class="col-md-2">
+									<label for="fecha">Fecha de Inventario</label>
+									<input type="date" name="fecha" id="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="inventario.fecha" required>
+								</div>
+								<div class="col-md-2">
+									<label for="hora">Hora de Inventario</label>
+									<input type="time" name="hora" id="hora" class="form-control" #hora="ngModel" [(ngModel)]="inventario.hora" required>
+								</div>
+								<div class="col-md-3">
+									<label for="comentario">Descripción</label>
+                                    <input type="text" name="comentario" id="comentario" class="form-control" #comentario="ngModel" [(ngModel)]="inventario.comentario" required>
+								</div>
+
+								
+							</div>
+
+							<hr>
+
+							<app-inventarios-buscar-producto (selectedProduct)="onProductoSubmit($event)"></app-inventarios-buscar-producto>
+			
+							<hr>
+
+							<!-- DETALLE COMPRA -->
+							<div class="row mt-3">
+								<div class="col">
+									<div class="table-responsive">
+										<table class="table table-bordered table-striped table-hover" width="100%" cellspacing="0">
+											<thead class="bg-primary text-light">
+												<tr>
+													<th>#</th>
+													<th>Producto</th>
+													<th>Unidad de Medida</th>
+													<th>Stock</th>
+													<th>Acciones</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr *ngFor="let item of inventario.detalle; index as i">
+                                                    <td>{{ (i + 1) }}</td>
+                                                    <td>{{ item.get_producto.producto.nombre }}</td>
+                                                    <td>{{ item.get_producto.unidad_medida.unidad }}</td>
+													<td>
+														<input class="form-control w-auto" type="number" min="0" [name]="'stock'+i" [id]="'stock'+i" (ngModelChange)="stockChange(i)" [(ngModel)]="item.stock">
+													</td>
+													<td>
+														<button type="button" class="btn btn-danger" (click)="removeItem(i)">
+															<i class="fas fa-times mr-2"></i>Quitar
+														</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row col">
+						<div class="form-inline">
+							<button id="buttonRegister" type="submit" class="btn btn-success mr-2" [disabled]="!formRegister.form.valid">
+								<i class="fas fa-check mr-2"></i>Guardar
+							</button>
+							<div id="spinnerRegister" class="spinner-border spinner-border-lg text-success m-auto" role="status" style="display: none;">
+								<span class="sr-only">Loading...</span>
+							</div>
+						</div>
+					</div>
+                </form>
+                
+			</div>
+		</div>
+
+	</div>
+</section>

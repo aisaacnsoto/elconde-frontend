@@ -1,0 +1,76 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/pago-adicional">Pagos Adicionales</a></li>
+                    <li class="breadcrumb-item activo">Tipos</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Tipos de Pago Adicional</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-12">
+                
+                <button class="btn btn-primary mb-4" (click)="goToCreate()">
+                    <i class="fas fa-plus mr-2"></i>Agregar
+                </button>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" id="dtTipoPagoAdicional" width="100%" cellspacing="0">
+                        <thead class="bg-primary text-light">
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<div class="modal fade" id="modal-delete">
+	<div class="modal-dialog">
+		<form #formEliminar="ngForm" (ngSubmit)="onDelete()">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Eliminar Tipo</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					¿Desea continuar con la eliminación?
+					
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<i class="fas fa-times mr-1"></i>
+						Cancelar
+					</button>
+					<button id="buttonDelete" type="submit" class="btn btn-danger">
+                        <i class="fas fa-ban mr-1"></i>
+                        Eliminar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

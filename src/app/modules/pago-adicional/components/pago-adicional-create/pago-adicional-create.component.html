@@ -1,0 +1,85 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/pago-adicional">Pagos Adicionales</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col text-center">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Pago Adicional</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+                                        
+                                        <div class="form-group row">
+                                            <label for="tipo" class="col-md-4 col-form-label text-md-right">Tipo</label>
+                                            <div class="col-md-6">
+                                                <select id="tipo" name="tipo" class="form-control" #tipo="ngModel" [(ngModel)]="pago.tipo" selectDefaultValue="-1" [class.is-invalid]="tipo.touched && !tipo.valid" [class.is-valid]="tipo.touched && tipo.valid">
+                                                    <option value="-1">-- Seleccione un Tipo --</option>
+                                                    <option *ngFor="let tipo of tipos" [value]="tipo.id">{{ tipo.nombre }}</option>
+                                                </select>
+                                                <div class="invalid-feedback" *ngIf="tipo.touched">
+                                                    Por favor, seleccione un tipo.
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="form-group row">
+                                            <label for="fecha" class="col-md-4 col-form-label text-md-right">Fecha</label>
+                                            <div class="col-md-6">
+                                                <input type="date" id="fecha" name="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="pago.fecha" required focusOnShow [class.is-invalid]="fecha.touched && !fecha.valid" [class.is-valid]="fecha.touched && fecha.valid">
+                                                <div class="invalid-feedback">
+                                                    La fecha es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+                                                            
+                                        <div class="form-group row">
+                                            <label for="monto" class="col-md-4 col-form-label text-md-right">Monto</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="monto" name="monto" class="form-control" #monto="ngModel" [(ngModel)]="pago.monto" required focusOnShow [class.is-invalid]="monto.touched && !monto.valid" [class.is-valid]="monto.touched && monto.valid">
+                                                <div class="invalid-feedback">
+                                                    El monto es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>

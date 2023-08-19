@@ -1,0 +1,133 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/usuarios">Inicio</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col text-center">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Usuario</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+
+                                        <div class="form-group row">
+                                            <label for="nombre_display" class="col-md-4 col-form-label text-md-right">Alias</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="nombre_display" name="nombre_display" class="form-control" #nombre_display="ngModel" [(ngModel)]="usuario.nombre_display" required focusOnShow [class.is-invalid]="nombre_display.touched && !nombre_display.valid" [class.is-valid]="nombre_display.touched && nombre_display.valid">
+                                                <div class="invalid-feedback">
+                                                    El alias es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="form-group row">
+                                            <label for="empleado" class="col-md-4 col-form-label text-md-right">Empleado</label>
+                                            <div class="col-md-6">
+                                                <select id="empleado" name="empleado" class="form-control" #empleado="ngModel" [(ngModel)]="usuario.empleado" selectDefaultValue="-1" [class.is-invalid]="empleado.touched && !empleado.valid" [class.is-valid]="empleado.touched && empleado.valid">
+                                                    <option value="-1">-- Seleccione un Empleado --</option>
+                                                    <option *ngFor="let empleado of empleados" [value]="empleado.id">
+                                                        {{ empleado.nombres+' '+empleado.ape_paterno+' '+empleado.ape_materno }}
+                                                    </option>
+                                                </select>
+                                                <div class="invalid-feedback" *ngIf="empleado.touched">
+                                                    Por favor, seleccione un empleado.
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="form-group row">
+                                            <label for="username" class="col-md-4 col-form-label text-md-right">Nombre de Usuario</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="username" name="username" class="form-control" #username="ngModel" [(ngModel)]="usuario.username" required [class.is-invalid]="username.touched && !username.valid" [class.is-valid]="username.touched && username.valid">
+                                                <div class="invalid-feedback">
+                                                    La nombre de usuario es obligatorio.
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="form-group row">
+                                            <label for="password" class="col-md-4 col-form-label text-md-right">Contraseña</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="password" name="password" class="form-control" #password="ngModel" [(ngModel)]="usuario.password" required [class.is-invalid]="password.touched && !password.valid" [class.is-valid]="password.touched && password.valid">
+                                                <div class="invalid-feedback">
+                                                    La contraseña es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="form-group row">
+                                            <label for="rol" class="col-md-4 col-form-label text-md-right">Rol</label>
+                                            <div class="col-md-6">
+                                                <select id="rol" name="rol" class="form-control" #rol="ngModel" [(ngModel)]="usuario.rol" selectDefaultValue="-1" [class.is-invalid]="rol.touched && !rol.valid" [class.is-valid]="rol.touched && rol.valid">
+                                                    <option value="-1">-- Seleccione un Rol --</option>
+                                                    <option *ngFor="let rol of roles" [value]="rol.id">{{ rol.nombre }}</option>
+                                                </select>
+                                                <div class="invalid-feedback" *ngIf="rol.touched">
+                                                    Por favor, seleccione un rol.
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                        <div class="form-group row">
+                                            <label for="activo" class="col-md-4 col-form-label text-md-right">Estado</label>
+                                            <div class="col-md-6">
+                                                <select id="activo" name="activo" class="form-control" #activo="ngModel" [(ngModel)]="usuario.activo" required>
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                    
+                                        <fieldset class="form-group">
+                                            <div class="row">
+                                                <label class="col-md-4 col-form-label pt-0 text-md-right">Permisos</label>
+                                                <div class="col-md-6">
+                                                    <div class="form-check" *ngFor="let permiso of permisos; let i = index">
+                                                        <input class="form-check-input" type="checkbox" name="permiso" [id]="'permiso'+permiso.id" [checked]="permisos[i].granted">
+                                                        <label class="form-check-label" [for]="'permiso'+permiso.id">
+                                                            {{ permiso.nombre }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>

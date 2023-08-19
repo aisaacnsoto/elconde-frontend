@@ -1,0 +1,125 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/promociones">Promociones</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/promociones/clientes-vip/codigos">Códigos VIP</a></li>
+                    <li class="breadcrumb-item active">{{ edit ? 'Editar' : 'Registrar' }}</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col text-center">
+                <h1>{{ edit ? 'Editar' : 'Registrar' }} Código VIP</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content p-2">
+	<div class="container-fluid">
+
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+
+										<div class="form-group row">
+                                            <label for="codigo" class="col-md-4 col-form-label text-md-right">Código</label>
+                                            <div class="col-md-6">
+                                                <input type="text" id="codigo" name="codigo" maxlength="30" class="form-control" #codigo="ngModel" [(ngModel)]="clienteVIP.codigo" required focusOnShow [class.is-invalid]="codigo.touched && !codigo.valid" [class.is-valid]="codigo.touched && codigo.valid">
+                                                <div class="invalid-feedback">
+                                                    El código es obligatorio.
+                                                </div>
+                                            </div>
+										</div>
+
+										<div class="form-group row">
+                                            <label for="cliente" class="col-md-4 col-form-label text-md-right">Cliente</label>
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <input type="text" id="cliente" class="form-control" required [value]="clienteVIP.cliente.nombres+' '+clienteVIP.cliente.apellidos" readonly>
+                                                    <div class="input-group-append" id="button-addon4">
+                                                        <button type="button" id="btnBuscarCliente" class="btn btn-primary" data-toggle="modal" data-target="#modal-buscar-cliente"><i class="fas fa-search mr-1"></i>Buscar</button>
+                                                    </div>
+                                                </div>
+                                                <div class="invalid-feedback">
+                                                    El código es obligatorio.
+                                                </div>
+                                            </div>
+										</div>
+
+                                        <div class="form-group row">
+                                            <label for="fecha_desde" class="col-md-4 col-form-label text-md-right">Fecha de Comienzo:</label>
+                                            <div class="col-md-6">
+                                                <input type="date" id="fecha_desde" name="fecha_desde" class="form-control" #fecha_desde="ngModel" [(ngModel)]="clienteVIP.fecha_desde" required [class.is-invalid]="fecha_desde.touched && !fecha_desde.valid" [class.is-valid]="fecha_desde.touched && fecha_desde.valid">
+                                                <div class="invalid-feedback">
+                                                    La fecha de comienzo es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="fecha_hasta" class="col-md-4 col-form-label text-md-right">Fecha de Vencimiento:</label>
+                                            <div class="col-md-6">
+                                                <input type="date" id="fecha_hasta" name="fecha_hasta" class="form-control" #fecha_hasta="ngModel" [(ngModel)]="clienteVIP.fecha_hasta" required [class.is-invalid]="fecha_hasta.touched && !fecha_hasta.valid" [class.is-valid]="fecha_hasta.touched && fecha_hasta.valid">
+                                                <div class="invalid-feedback">
+                                                    La fecha de vencimiento es obligatoria.
+                                                </div>
+                                            </div>
+                                        </div>
+
+										<div class="form-group row">
+                                            <label for="activo" class="col-md-4 col-form-label text-md-right">Estado</label>
+											<div class="col-md-6">
+                                                <select id="activo" name="activo" class="form-control" #activo="ngModel" [(ngModel)]="clienteVIP.activo" required>
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+											</div>
+										</div>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+                                                    <i class="fas fa-check mr-1"></i>
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+	</div>
+</section>
+
+<div class="modal fade" id="modal-buscar-cliente">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Clientes</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<app-cliente-vip-buscar-cliente (selectedCliente)="buscarCliente($event)"></app-cliente-vip-buscar-cliente>
+
+			</div>
+		</div>
+	</div>
+</div>

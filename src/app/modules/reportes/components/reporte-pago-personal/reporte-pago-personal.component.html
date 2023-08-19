@@ -1,0 +1,212 @@
+<section class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a routerLink="/reportes">Inicio</a></li>
+				</ol>
+			</div>
+		</div>
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>Reporte de Pago a Personal</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col">
+				<div class="card">
+					<div class="card-body">
+						<div class="form-row">
+							<div class="form-group col-md-3 mb-0">
+								<label for="fecha">Fecha:</label>
+								<input type="date" id="fecha" class="form-control" [(ngModel)]="fecha" (change)="fetchData()">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<app-loader *ngIf="!data"></app-loader>
+		
+		<div class="row" *ngIf="data">
+			<div class="col">
+
+				<div id="seccion-imprimir">
+
+					<div class="row col">
+						<h3 class="m-auto">Pago a Personal</h3>
+					</div>
+
+					<hr>
+
+					<div class="form-inline">
+						Fecha: <span class="ml-4">{{ data.fecha | date:'dd/MM/yyyy' }}</span>
+					</div>
+
+					<hr>
+
+					<div id="pagoPersonalAccordion" *ngIf="data.pago_empleados.length > 0">
+						<div class="card shadow" *ngFor="let registro of data.pago_empleados; let i = index">
+							<div class="card-header">
+								<h4 class="card-title">
+									<a data-toggle="collapse" data-parent="#pagoPersonalAccordion" href="#collapse{{ i }}">
+										<strong>{{ (i + 1) + '. ' + registro.empleado_nombre }}</strong>
+									</a>
+								</h4>
+								<div class="float-right">
+									<a class="mr-2" data-toggle="collapse" data-parent="#pagoPersonalAccordion" href="#collapse{{ i }}">
+										<span><strong>{{ registro.pago_barbero | currency:'S/ ' }}</strong></span>
+									</a>
+
+									<input type="checkbox" name="pagado" id="{{ 'pagado-'+registro.empleado_id }}" class="mr-1" [checked]="registro.pagado">
+									<label for="{{ 'pagado-'+registro.empleado_id }}">Pagado</label>
+								</div>
+							</div>
+							<div id="collapse{{ i }}" class="panel-collapse collapse show">
+								<div class="card-body p-0">
+									<div *ngIf="registro.detalle.servicios.length > 0">
+										<!-- <span class="m-5">
+											<strong>SERVICIOS REALIZADOS</strong>
+										</span> -->
+										
+										<div class="table-responsive">
+											<table class="table table-striped m-0" width="100%" cellspacing="0">
+												<thead>
+													<tr>
+														<th scope="col" class="text-center">Cantidad</th>
+														<th scope="col" class="text-left">Servicio</th>
+														<th scope="col" class="text-right">Precio</th>
+														<th scope="col" class="text-center">Descuento</th>
+														<th scope="col" class="text-right">Subtotal</th>
+														<th scope="col" class="text-center">Comisión</th>
+														<th scope="col" class="text-right">Pago</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr *ngFor="let servicio of registro.detalle.servicios; let j = index">
+														<td class="text-center">{{ servicio.cantidad }}</td>
+														<td class="text-left">{{ servicio.concepto_descripcion }}</td>
+														<td class="text-right text-nowrap">{{ servicio.precio | currency:'S/ ' }}</td>
+														<td class="text-center">
+															<div class="d-flex text-center">
+																<span>{{ servicio.descuento }} %</span>
+																<div *ngIf="servicio.promo_id != null && servicio.descuento > 0" class="ml-1">
+																	<span *ngIf="servicio.promo_id == 1" class="text-primary" title="Recomendaciones"><i class="fas fa-user-friends"></i></span>
+																	<span *ngIf="servicio.promo_id == 2" class="text-warning" title="Cliente VIP"><i class="fas fa-crown"></i></span>
+																	<span *ngIf="servicio.promo_id == 3" class="text-pink" title="Cumpleaños"><i class="fas fa-birthday-cake"></i></span>
+																	<span *ngIf="servicio.promo_id == 4" class="text-orange" title="Trabajador"><i class="fas fa-briefcase"></i></span>
+																	<span *ngIf="[1,2,3,4].indexOf(servicio.promo_id) == -1" class="text-danger"><i class="fas fa-certificate"></i><strong>{{ servicio.promo_nombre }}</strong></span>
+																</div>
+															</div>
+														</td>
+														<td class="text-right text-nowrap">{{ servicio.subtotal | currency:'S/ ' }}</td>
+														<td class="text-center">{{ servicio.comision_barbero }}</td>
+														<td class="text-right text-nowrap">{{ servicio.pago_barbero | currency:'S/ ' }}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div *ngIf="registro.detalle.ventas.length > 0">
+
+										<!-- <strong class="m-3">PRODUCTOS VENDIDOS</strong> -->
+										<div class="table-responsive">
+											<table class="table table-striped m-0" width="100%" cellspacing="0">
+												<thead>
+													<tr>
+														<th scope="col">Cantidad</th>
+														<th scope="col">Producto</th>
+														<th scope="col">Unidad</th>
+														<th scope="col">Precio</th>
+														<th scope="col">Descuento</th>
+														<th scope="col">Subtotal</th>
+														<th scope="col">Comisión</th>
+														<th scope="col">Pago</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr *ngFor="let servicio of registro.detalle.ventas; let j = index">
+														<td>{{ servicio.cantidad }}</td>
+														<td>{{ servicio.concepto_descripcion }}</td>
+														<td>{{ servicio.concepto_unidad }}</td>
+														<td class="text-right text-nowrap">{{ servicio.precio | currency:'S/ ' }}</td>
+														<td>{{ servicio.descuento }}</td>
+														<td class="text-right text-nowrap">{{ servicio.subtotal | currency:'S/ ' }}</td>
+														<td>{{ servicio.comision_barbero }}</td>
+														<td class="text-right text-nowrap">{{ servicio.pago_barbero | currency:'S/ ' }}</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+									<div class="table-responsive">
+										<table class="table m-0" width="100%" cellspacing="0">
+											<tbody>
+												<tr>
+													<td class="text-right" colspan="7">COMISIÓN POR SERVICIOS</td>
+													<td class="text-right text-nowrap">
+														<strong>
+															{{ registro.detalle.pago.comision_servicios | currency:'S/ ' }}
+														</strong>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="7">COMISIÓN POR VENTAS</td>
+													<td class="text-right text-nowrap">
+														<strong>
+															{{ registro.detalle.pago.comision_productos | currency:'S/ ' }}
+														</strong>
+													</td>
+												</tr>
+												<tr>
+													<td class="text-right" colspan="7">PAGO TOTAL</td>
+													<td class="text-right text-nowrap">
+														<strong>
+															{{ registro.detalle.pago.comision_total | currency:'S/ ' }}
+														</strong>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card card-secondary shadow">
+							<div class="card-header">
+								<h4 class="card-title">
+									<strong>TOTAL PAGO PERSONAL</strong>
+								</h4>
+								<span class="float-right"><strong>{{ data.total.pago_personal | currency:'S/ ' }}</strong></span>
+							</div>
+						</div>
+					</div>
+
+					
+				</div>
+				
+				<div class="form-inline">
+					<button class="btn btn-primary" (click)="imprimir()">Imprimir</button>
+					<div class="col"></div>
+					<button id="btnGuardar" class="btn btn-success" (click)="actualizarPago()">
+						<i class="fas fa-check mr-1"></i>
+						Guardar
+					</button>
+				</div>
+				<div class="row col">
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,62 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a [routerLink]="['/'+return_to]">{{ return_to=='dashboard' ? 'Dashboard' : 'Inicio' }}</a></li>
+                    <li class="breadcrumb-item active">Apertura</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <h1>Apertura de Caja</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="content p-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-3">
+				<form #formRegistrar="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+					<div class="card card-primary">
+						<div class="card-body">
+							
+							<div class="form-group row">
+								<div class="col">
+									<div class="d-flex align-items-center">
+										<label for="fecha" class="col-form-label">Fecha</label>
+										<div id="spinner" class="spinner-border ml-auto spinner-border-sm text-success" style="display: none;" role="status" aria-hidden="true"></div>
+									</div>
+									<input type="date" id="fecha" name="fecha" class="form-control" #fecha="ngModel" [(ngModel)]="caja_apertura.fecha" required (change)="getApertura()" [readonly]="usuario.rol != 1">
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<div class="col">
+									<label for="total" class="col-form-label">Total</label>
+									<input type="text" id="total" name="total" class="form-control" #total="ngModel" [(ngModel)]="caja_apertura.total" required focusOnShow [class.is-invalid]="total.touched && !total.valid" [class.is-valid]="total.touched && total.valid">
+									<div class="invalid-feedback">
+										El monto es obligatorio.
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-footer">
+							<div class="form-inline">
+								<div class="col"></div>
+								<button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!formRegistrar.form.valid">
+									<i class="fas fa-check mr-1"></i>
+									Guardar
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

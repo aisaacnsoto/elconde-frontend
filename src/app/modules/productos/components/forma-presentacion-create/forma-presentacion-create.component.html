@@ -1,0 +1,113 @@
+<div class="modal fade" id="modal-presentacion">
+	<div class="modal-dialog">
+		<form #presentacionRegistrar="ngForm" (ngSubmit)="onPresentacionFormSubmit()">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">{{ edit ? 'Editar' : 'Registrar' }} Presentación</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="form-row">
+						<div class="form-group col">
+							<label for="unidad_medida" class="col-form-label text-md-right">Unidad de Medida</label>
+							<select id="unidad_medida" name="unidad_medida" class="form-control" #unidad_medida="ngModel" [(ngModel)]="presentacion.unidad_medida_id" required selectDefaultValue="-1">
+								<option value="-1">-- Seleccione una Unidad de Medida --</option>
+								<option *ngFor="let unidad_medida of unidades_medida" [value]="unidad_medida.id">{{ unidad_medida.unidad }}</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col">
+							<label for="costo" class="col-form-label text-md-right">Costo</label>
+							<input type="text" id="costo" name="costo" class="form-control" #costo="ngModel" [(ngModel)]="presentacion.costo" required>
+						</div>
+						
+						<div class="form-group col">
+							<label for="precio_venta" class="col-form-label text-md-right">Precio Venta</label>
+							<input type="text" id="precio_venta" name="precio_venta" class="form-control" #precio_venta="ngModel" [(ngModel)]="presentacion.precio_venta" required>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col">
+							<label for="margen_ganancia" class="col-form-label text-md-right">Ganancia %</label>
+							<input type="text" id="margen_ganancia" name="margen_ganancia" class="form-control" value="{{ presentacion.margen_ganancia | number:'1.2-2' }}" required readonly>
+						</div>
+						<div class="form-group col">
+							<label for="efectivo_ganancia" class="col-form-label text-md-right">Ganancia Soles</label>
+							<input type="text" id="efectivo_ganancia" name="efectivo_ganancia" class="form-control" value="{{ presentacion.margen_ganancia * presentacion.costo | number:'1.2-2' }}" required readonly>
+						</div>
+						<div class="form-group col">
+							<label for="comision_barbero" class="col-form-label text-md-right">Comisión Barbero</label>
+							<input type="number" min="0" max="100" id="comision_barbero" name="comision_barbero" class="form-control" #comision_barbero="ngModel" [(ngModel)]="presentacion.comision_barbero" required>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col mb-0">
+							<label for="inputBarCode" class="col-form-label text-md-right">Códigos de Barras</label>
+							<form #codigoForm="ngForm" (ngSubmit)="onCodigoSubmit()" class="mb-3">
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" id="inputBarCode" placeholder="Agrega un código de barras...">
+									<div class="input-group-append">
+										<button type="submit" class="btn btn-outline-primary"><i class="fas fa-plus"></i></button>
+									</div>
+								</div>
+							</form>
+							<table class="table table-bordered" width="100%" cellspacing="0">
+								<tbody>
+									<tr *ngFor="let code of presentacion.bar_codes; index as i">
+										<td>
+											{{ code.codigo }}
+											<button class="btn btn-outline-danger btn-sm float-right" (click)="onRemoveBarCode(i)"><i class="fas fa-times"></i></button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="form-group col mb-0">
+							<label class="col-form-label text-md-right">Se puede</label>
+							
+							<div class="form-inline">
+								<div class="form-check mr-2">
+									<input class="form-check-input" type="checkbox" name="puede_vender" id="puede_vender" [(ngModel)]="presentacion.puede_vender">
+									<label class="form-check-label" for="puede_vender">Vender</label>
+								</div>
+								<div class="form-check mr-2">
+									<input class="form-check-input" type="checkbox" name="puede_comprar" id="puede_comprar" [(ngModel)]="presentacion.puede_comprar">
+									<label class="form-check-label" for="puede_comprar">Comprar</label>
+								</div>
+								<div class="form-check mr-2">
+									<input class="form-check-input" type="checkbox" name="puede_asignar" id="puede_asignar" [(ngModel)]="presentacion.puede_asignar">
+									<label class="form-check-label" for="puede_asignar">Asignar</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" name="puede_consumir" id="puede_consumir" [(ngModel)]="presentacion.puede_consumir">
+									<label class="form-check-label" for="puede_consumir">Consumir</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-default" data-dismiss="modal">
+						<span class="fas fa-times mr-1"></span>
+						Cancelar
+					</button>
+					<button id="buttonRegister" type="submit" class="btn btn-success" [disabled]="!presentacionRegistrar.form.valid">
+                        <i class="fas fa-check mr-1"></i>
+                        Guardar
+                    </button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
