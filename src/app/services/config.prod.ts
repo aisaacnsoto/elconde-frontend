@@ -1,3 +1,3 @@
 export const Config = {
-    apiURL: 'https://www.puntodventaXXX.com.pe/elconde/api/public/api/'
+    apiURL: 'https://elconde-backend-production.up.railway.app/api/'
 }
